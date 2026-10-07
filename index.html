@@ -268,7 +268,7 @@ else:
     modulePdfUrls.forEach((url) => URL.revokeObjectURL(url));
     modulePdfUrls = [];
     const list = $("modulePdfList");
-    if (!pdfFiles?.length) { list.innerHTML = '<p class="module-empty">Inka PDF upload cheyyaledu.</p>'; return; }
+    if (!pdfFiles?.length) { list.innerHTML = '<p class="module-empty">No PDFs have been uploaded yet.</p>'; return; }
     list.innerHTML = pdfFiles.map((file, index) => {
       const url = URL.createObjectURL(file.blob);
       modulePdfUrls.push(url);
@@ -281,7 +281,7 @@ else:
     const detail = $("moduleDetail");
     $("moduleGrid").hidden = true;
     detail.hidden = false;
-    detail.innerHTML = `<button class="module-back" type="button" id="moduleBack">← All modules</button><span class="module-number">MODULE ${String(activeModuleId).padStart(2, "0")}</span><h3>${escapeHtml(module.title)}</h3><p>${escapeHtml(module.description)}</p><label class="module-upload-label" for="modulePdfUpload">Upload PDF materials</label><input id="modulePdfUpload" type="file" accept="application/pdf,.pdf" multiple><small id="moduleUploadStatus">PDF files ee browser lo save avuthayi.</small><div class="module-pdf-list" id="modulePdfList"></div>`;
+    detail.innerHTML = `<button class="module-back" type="button" id="moduleBack">← All modules</button><span class="module-number">MODULE ${String(activeModuleId).padStart(2, "0")}</span><h3>${escapeHtml(module.title)}</h3><p>${escapeHtml(module.description)}</p><label class="module-upload-label" for="modulePdfUpload">Upload PDF materials</label><input id="modulePdfUpload" type="file" accept="application/pdf,.pdf" multiple><small id="moduleUploadStatus">PDF files are saved in this browser.</small><div class="module-pdf-list" id="modulePdfList"></div>`;
     $("moduleBack").onclick = () => { detail.hidden = true; $("moduleGrid").hidden = false; };
     const uploadId = `module-${activeModuleId}`;
     const saved = await readUploads(uploadId).catch(() => ({ modulePdfs: [] }));
