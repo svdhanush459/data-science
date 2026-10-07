@@ -387,7 +387,7 @@ else:
         const safeName = file.name.replace(/[\\/]/g, "_");
         runtime.FS.writeFile(safeName, new Uint8Array(await file.blob.arrayBuffer()));
       }
-      runtime.setStdin({ stdin: () => window.prompt("Python input() — enter a value:") });
+      const csvSample=["feature,target,value,date,label,hours,score,group","1,50,2,2025-01-01,Support,1,50,A","2,55,3,2025-01-02,Support,2,55,B","3,65,4,2025-01-03,Support,3,65,A","4,,5,2025-01-04,Pass,4,70,B","5,75,6,2025-01-05,Pass,5,75,A","6,85,7,2025-01-06,Pass,6,85,B","3,65,4,2025-01-03,Support,3,65,A"].join(String.fromCharCode(10));const firstCsv=(uploads.datasets||[]).find(file=>file.name.toLowerCase().endsWith(".csv"));const fallbackBytes=firstCsv?new Uint8Array(await firstCsv.blob.arrayBuffer()):new TextEncoder().encode(csvSample);const sourceForCsv=typeof source==="string"?source:editor.value;const csvNames=new Set(["dataset.csv","raw_data.csv",...(sourceForCsv.match(/[A-Za-z0-9_.-]+\.csv/gi)||[]).map(name=>name.replace(/[\/]/g,"_"))]);csvNames.forEach(name=>{if(!runtime.FS.analyzePath(name).exists)runtime.FS.writeFile(name,fallbackBytes)});runtime.setStdin({ stdin: () => window.prompt("Python input() — enter a value:") });
       runtime.globals.set("_labmanual_source", source);
       status.textContent = "Running…";
       const result = await runtime.runPythonAsync(`
@@ -399,7 +399,7 @@ try:
     with _labmanual_contextlib.redirect_stdout(_labmanual_stdout), _labmanual_contextlib.redirect_stderr(_labmanual_stderr):
         exec(compile(_labmanual_source, "<labmanual>", "exec"), globals())
 except Exception as _labmanual_error:
-    print(f"\${type(_labmanual_error).__name__}: \${_labmanual_error}", file=_labmanual_stderr)
+    print("{}: {}".format(type(_labmanual_error).__name__, _labmanual_error), file=_labmanual_stderr)
 _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
       `);
       const text = String(result || "").trim() || "Code finished successfully. (No output printed.)";
@@ -1019,7 +1019,7 @@ else:
             const safeName = file.name.replace(/[\\/]/g, "_");
             runtime.FS.writeFile(safeName, new Uint8Array(await file.blob.arrayBuffer()));
           }
-          runtime.setStdin({ stdin: () => window.prompt("Python input() — enter a value:") });
+          const csvSample=["feature,target,value,date,label,hours,score,group","1,50,2,2025-01-01,Support,1,50,A","2,55,3,2025-01-02,Support,2,55,B","3,65,4,2025-01-03,Support,3,65,A","4,,5,2025-01-04,Pass,4,70,B","5,75,6,2025-01-05,Pass,5,75,A","6,85,7,2025-01-06,Pass,6,85,B","3,65,4,2025-01-03,Support,3,65,A"].join(String.fromCharCode(10));const firstCsv=(uploads.datasets||[]).find(file=>file.name.toLowerCase().endsWith(".csv"));const fallbackBytes=firstCsv?new Uint8Array(await firstCsv.blob.arrayBuffer()):new TextEncoder().encode(csvSample);const sourceForCsv=typeof source==="string"?source:editor.value;const csvNames=new Set(["dataset.csv","raw_data.csv",...(sourceForCsv.match(/[A-Za-z0-9_.-]+\.csv/gi)||[]).map(name=>name.replace(/[\/]/g,"_"))]);csvNames.forEach(name=>{if(!runtime.FS.analyzePath(name).exists)runtime.FS.writeFile(name,fallbackBytes)});runtime.setStdin({ stdin: () => window.prompt("Python input() — enter a value:") });
           runtime.globals.set("_labmanual_source", editor.value);
           status.textContent = "Running…";
           const result = await runtime.runPythonAsync(`
@@ -1031,7 +1031,7 @@ try:
     with _labmanual_contextlib.redirect_stdout(_labmanual_stdout), _labmanual_contextlib.redirect_stderr(_labmanual_stderr):
         exec(compile(_labmanual_source, "<labmanual-part>", "exec"), globals())
 except Exception as _labmanual_error:
-    print(f"\${type(_labmanual_error).__name__}: \${_labmanual_error}", file=_labmanual_stderr)
+    print("{}: {}".format(type(_labmanual_error).__name__, _labmanual_error), file=_labmanual_stderr)
 _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
           `);
           output.textContent = String(result || "").trim() || "Code finished successfully. (No text output.)";
