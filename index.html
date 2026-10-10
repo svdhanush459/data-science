@@ -241,6 +241,20 @@ else:
     .lab-nav{position:sticky;top:0;z-index:5;display:flex;justify-content:center;gap:8px;padding:8px 12px;background:#fff;border-bottom:1px solid #dce3ef;box-shadow:0 3px 10px #14264b0b}
     .lab-nav button{border:0;border-radius:7px;background:transparent;color:#53627e;padding:8px 14px;font:600 10px "Segoe UI",Arial,sans-serif;cursor:pointer}
     .lab-nav button:hover,.lab-nav button.active{background:#edf2ff;color:#315fc4}
+    .theme-toggle{position:absolute;right:232px;top:22px;border:1px solid #dce5e9;border-radius:9px;background:#fff;color:#35465c;padding:8px 11px;font:600 11px "Segoe UI",Arial,sans-serif;cursor:pointer;box-shadow:0 2px 8px #10243b08}
+    .theme-toggle:hover{border-color:#176b63;color:#176b63}
+    html[data-theme="dark"]{--navy:#e6edf7;--blue:#72a8ff;--red:#d9717c;--gold:#e2bb68;--ink:#e3eaf4;--muted:#a4b1c3;--line:#344258;--bg:#101722;color-scheme:dark}
+    html[data-theme="dark"] body{background:linear-gradient(180deg,#111a26 0,#0d141e 420px);color:var(--ink)}
+    html[data-theme="dark"] .head,html[data-theme="dark"] .lab-nav,html[data-theme="dark"] .card,html[data-theme="dark"] .profile,html[data-theme="dark"] .panel,html[data-theme="dark"] .tabs,html[data-theme="dark"] .tabs button,html[data-theme="dark"] .back,html[data-theme="dark"] .modal,html[data-theme="dark"] .menu,html[data-theme="dark"] .menu button,html[data-theme="dark"] .userbtn,html[data-theme="dark"] .subject{background:#182333;color:var(--ink);border-color:var(--line)}
+    html[data-theme="dark"] .identity h1,html[data-theme="dark"] .intro h2,html[data-theme="dark"] .dtitle h2,html[data-theme="dark"] .panel h3,html[data-theme="dark"] .sectionhead h3,html[data-theme="dark"] .video-note-parts button strong,html[data-theme="dark"] .part-compiler h4{color:#e6edf7}
+    html[data-theme="dark"] .search,html[data-theme="dark"] .search input,html[data-theme="dark"] .github,html[data-theme="dark"] .part-code,html[data-theme="dark"] .inputfield input,html[data-theme="dark"] .inputfield textarea{background:#111b29;color:var(--ink);border-color:var(--line)}
+    html[data-theme="dark"] .lab-nav button,html[data-theme="dark"] .lab-nav button:hover,html[data-theme="dark"] .lab-nav button.active{color:#c3d0e2}
+    html[data-theme="dark"] .lab-nav button:hover,html[data-theme="dark"] .lab-nav button.active,html[data-theme="dark"] .edit,html[data-theme="dark"] .card-subparts button,html[data-theme="dark"] .part-switcher button,html[data-theme="dark"] .video-note-parts button{background:#223249;color:#a9c8ff;border-color:#3b506c}
+    html[data-theme="dark"] .video-note-parts button small,html[data-theme="dark"] .card p,html[data-theme="dark"] .panel p,html[data-theme="dark"] .field span,html[data-theme="dark"] .field b{color:#aab7c9}
+    html[data-theme="dark"] .analysis div,html[data-theme="dark"] .node,html[data-theme="dark"] .step,html[data-theme="dark"] .part-compiler{background:#131e2c;color:#dce5f2;border-color:#344258}
+    html[data-theme="dark"] .progress{background:#2a3749}
+    html[data-theme="dark"] .theme-toggle{background:#223249;color:#e7edf7;border-color:#43536a}
+    @media(max-width:620px){.theme-toggle{right:16px;top:75px;padding:6px 8px;font-size:10px}}
     .lab-subtitle{margin:12px 0 0;color:#68788b;font-size:11px;font-weight:700;letter-spacing:2px;text-align:center}
     .video-note-parts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
     .video-note-parts button{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px;min-width:0;min-height:126px;padding:11px;text-align:left;white-space:normal;background:#f4f7ff;border-color:#d6e0f4;color:#315fc4;opacity:1}
@@ -259,6 +273,21 @@ else:
   nav.setAttribute("aria-label", "Main navigation");
   nav.innerHTML = '<button type="button" data-nav="home" class="active">Home</button><button type="button" data-nav="experiments">Experiments</button><button type="button" data-nav="modules">Module</button><button type="button" data-nav="compiler">Compiler</button>';
   document.querySelector(".head").after(nav);
+  const themeButton = document.createElement("button");
+  themeButton.type = "button";
+  themeButton.className = "theme-toggle";
+  themeButton.setAttribute("aria-label", "Switch color theme");
+  const savedTheme = localStorage.getItem("digitalLabTheme") === "dark" ? "dark" : "light";
+  document.documentElement.dataset.theme = savedTheme;
+  const updateThemeButton = () => { themeButton.textContent = document.documentElement.dataset.theme === "dark" ? "☀ Light mode" : "☾ Dark mode"; };
+  updateThemeButton();
+  themeButton.onclick = () => {
+    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = nextTheme;
+    localStorage.setItem("digitalLabTheme", nextTheme);
+    updateThemeButton();
+  };
+  document.querySelector(".head").appendChild(themeButton);
   const labSubtitle = document.querySelector(".head .identity p");
   if (labSubtitle) {
     labSubtitle.classList.add("lab-subtitle");
