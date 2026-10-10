@@ -273,6 +273,12 @@ else:
   nav.setAttribute("aria-label", "Main navigation");
   nav.innerHTML = '<button type="button" data-nav="home" class="active">Home</button><button type="button" data-nav="experiments">Experiments</button><button type="button" data-nav="modules">Module</button><button type="button" data-nav="compiler">Compiler</button>';
   document.querySelector(".head").after(nav);
+  const searchRow = document.querySelector(".searchrow");
+  const dataScienceIntro = document.querySelector(".intro");
+  if (searchRow && dataScienceIntro) {
+    dataScienceIntro.after(searchRow);
+    searchRow.style.paddingTop = "0";
+  }
   const themeButton = document.createElement("button");
   themeButton.type = "button";
   themeButton.className = "theme-toggle";
