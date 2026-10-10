@@ -285,6 +285,38 @@ else:
     @media(max-width:800px){.video-note-parts{grid-template-columns:repeat(2,minmax(0,1fr))}.video-note-parts button{min-height:108px}}
     @media(max-width:620px){.video-note-parts{grid-template-columns:1fr}.video-note-parts button{min-height:88px}}
     @media(max-width:620px){.lab-nav{gap:3px;padding:6px}.lab-nav button{padding:8px 11px;font-size:9px}}
+    html:not([data-theme="dark"]){--navy:#202c43;--blue:#e35b17;--red:#c9432f;--gold:#f3b63f;--ink:#263247;--muted:#68778b;--line:#eadcc9;--bg:#fff9f0;color-scheme:light}
+    html:not([data-theme="dark"]) body{background:radial-gradient(ellipse at 88% 0%,#fff0d6 0,transparent 34%),linear-gradient(180deg,#fffaf2 0,#f8f5ee 520px);color:#263247}
+    html:not([data-theme="dark"]) .top{height:5px;background:linear-gradient(90deg,#ef6a1c 0 48%,#f5bd43 48% 56%,#24334d 56% 88%,#c8432f 88%)}
+    html:not([data-theme="dark"]) .head,html:not([data-theme="dark"]) .lab-nav{background:#fffdf9;border-color:#eee2d2}
+    html:not([data-theme="dark"]) .identity p,html:not([data-theme="dark"]) .lab-nav button:hover,html:not([data-theme="dark"]) .lab-nav button.active{color:#d85416}
+    html:not([data-theme="dark"]) .lab-nav button:hover,html:not([data-theme="dark"]) .lab-nav button.active{background:#fff0dc}
+    html:not([data-theme="dark"]) .intro{position:relative;overflow:hidden;background:linear-gradient(115deg,#fff0d8 0%,#fff9ee 54%,#fbe8d3 100%);border-color:#f2d3ac;box-shadow:0 12px 30px #b6571720}
+    html:not([data-theme="dark"]) .intro::after{content:"🍃";position:absolute;right:175px;top:-25px;font-size:118px;opacity:.13;pointer-events:none;filter:saturate(.8)}
+    html:not([data-theme="dark"]) .intro>div{position:relative;z-index:1}
+    html:not([data-theme="dark"]) .intro h2{color:#202c43}
+    html:not([data-theme="dark"]) .intro p{color:#625d58}
+    html:not([data-theme="dark"]) .subject{background:#fffdf9;border-color:#efd6b7}
+    html:not([data-theme="dark"]) .subject b{color:#d85416}
+    html:not([data-theme="dark"]) .theme-toggle{border-color:#f0d2b0;background:#fff7eb;color:#a64319}
+    html:not([data-theme="dark"]) .search{border-color:#e8d9c5;background:#fffdf9}
+    html:not([data-theme="dark"]) .search span{color:#df5b19}
+    html:not([data-theme="dark"]) .search:focus-within{border-color:#e77836;box-shadow:0 0 0 4px #e7783622,0 5px 16px #10243b0a}
+    html:not([data-theme="dark"]) .sectionhead{border-color:#eadcc9}
+    html:not([data-theme="dark"]) .sectionhead h3{color:#27344b}
+    html:not([data-theme="dark"]) .add,html:not([data-theme="dark"]) .compiler-run{background:linear-gradient(135deg,#ed6a1b,#d94d1d);color:#fff;box-shadow:0 5px 14px #d65b2028}
+    html:not([data-theme="dark"]) .card{border-color:#ebdfd0;background:linear-gradient(180deg,#fffefa,#fffaf3);box-shadow:0 5px 18px #61421b0d}
+    html:not([data-theme="dark"]) .card:hover{border-color:#e9a268;box-shadow:0 15px 32px #9f4c1b20}
+    html:not([data-theme="dark"]) .tag,html:not([data-theme="dark"]) .module-number,html:not([data-theme="dark"]) .num,html:not([data-theme="dark"]) .mini i{background:#fff0dc;color:#bd4c19}
+    html:not([data-theme="dark"]) .foot b,html:not([data-theme="dark"]) .github,html:not([data-theme="dark"]) .module-pdf a{color:#d85416}
+    html:not([data-theme="dark"]) .card-subparts button,html:not([data-theme="dark"]) .part-switcher button{background:#fff3e3;border-color:#f0d5b5;color:#b84a18}
+    html:not([data-theme="dark"]) .card-subparts button:hover,html:not([data-theme="dark"]) .part-switcher button:hover,html:not([data-theme="dark"]) .part-switcher button.active{background:#e45c1a;border-color:#e45c1a;color:#fff}
+    html:not([data-theme="dark"]) .video-note-parts button{background:#fff7eb;border-color:#f0ddc3}
+    html:not([data-theme="dark"]) .video-part-badge{border-color:#f0bd74;background:#fff0d8;color:#a74718}
+    html:not([data-theme="dark"]) .profile,html:not([data-theme="dark"]) .panel,html:not([data-theme="dark"]) .module-intro,html:not([data-theme="dark"]) .module-card,html:not([data-theme="dark"]) .module-detail{border-color:#ebdfd0;box-shadow:0 6px 20px #61421b0c}
+    html:not([data-theme="dark"]) .edit{background:#fff3e5;border-color:#f0d5b5;color:#b84a18}
+    html:not([data-theme="dark"]) .edit:focus-visible,html:not([data-theme="dark"]) .add:focus-visible,html:not([data-theme="dark"]) .theme-toggle:focus-visible,html:not([data-theme="dark"]) .module-card:focus-visible,html:not([data-theme="dark"]) .lab-nav button:focus-visible{outline-color:#e86d26}
+    @media(max-width:620px){html:not([data-theme="dark"]) .intro::after{right:12px;top:-5px;font-size:66px;opacity:.1}}
   `;
   document.head.appendChild(style);
 
