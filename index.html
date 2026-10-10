@@ -382,9 +382,9 @@ else:
       showDashboard();
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else if (name === "experiments") {
-      if ($("detail").classList.contains("show")) $("back").click();
+      $("detail").classList.remove("show");
       showDashboard();
-      document.querySelector(".sectionhead")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      requestAnimationFrame(() => document.querySelector(".sectionhead")?.scrollIntoView({ behavior: "smooth", block: "start" }));
     } else if (name === "modules") {
       if ($("detail").classList.contains("show")) $("back").click();
       $("dashboard").classList.add("hide");
@@ -597,6 +597,8 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
     filtered.forEach((item) => {
       const card = document.createElement("article");
       card.className = "card";
+      card.tabIndex = 0;
+      card.setAttribute("aria-label", `Open Experiment ${item.id}: ${item.title}`);
       const subpartKeys = partLettersFor(item).map((letter) => `${Number(item.id)}${letter}`);
       const subpartsMarkup = subpartKeys.length ? `<div class="card-subparts" aria-label="Experiment ${Number(item.id)} subparts">${subpartKeys.map((key) => `<button type="button" data-open-part="${key}">${key.toUpperCase()}</button>`).join("")}</div>` : "";
       const videoId = youtubeVideoId(item.video || item.videoUrl);
@@ -611,7 +613,17 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
           else thumbnailImage.remove();
         };
       }
-      card.querySelector(".foot").onclick = () => window.openLab(item.id);
+      card.onclick = (event) => {
+        if (event.target.closest("button, a")) return;
+        window.openLab(item.id);
+      };
+      card.onkeydown = (event) => {
+        if ((event.key === "Enter" || event.key === " ") && event.target === card) {
+          event.preventDefault();
+          window.openLab(item.id);
+        }
+      };
+      card.querySelector(".foot").onclick = (event) => { event.stopPropagation(); window.openLab(item.id); };
       card.querySelectorAll("[data-open-part]").forEach((button) => button.onclick = (event) => {
         event.stopPropagation();
         window.openExperimentPartCompiler(button.dataset.openPart);
