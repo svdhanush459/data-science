@@ -746,7 +746,8 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
   let activeVideoUrl = "";
   let activeDataUrls = [];
   const partCompilerDefaults = {
-    "1a": `# Experiment 1(a): Read and inspect the car dataset
+    "1a": `# Notebook source: exp1.ipynb
+# Experiment 1(a): Read and inspect the car dataset
 import pandas as pd
 from pathlib import Path
 
@@ -768,7 +769,8 @@ print("\\nColumn information:")
 df.info()
 print("\\nSummary statistics:")
 print(df.describe(include="all"))`,
-    "1b": `# Experiment 1(b): Create and export student data as a text/CSV file
+    "1b": `# Notebook source: exp1.ipynb
+# Experiment 1(b): Create and export student data as a text/CSV file
 import pandas as pd
 
 student_data = pd.DataFrame({
@@ -781,7 +783,8 @@ print("Student data written successfully to Student_output.txt")
 print("\\nReading Student_output.txt:")
 loaded_data = pd.read_csv("Student_output.txt")
 print(loaded_data)`,
-    "1c": `# Experiment 1(c): Write and read student data in JSON and Excel formats
+    "1c": `# Notebook source: exp1.ipynb
+# Experiment 1(c): Write and read student data in JSON and Excel formats
 import pandas as pd
 import openpyxl
 
@@ -1365,7 +1368,7 @@ else:
     container.innerHTML = `<div class="compiler-experiment-picker"><label for="compilerExperimentSelect">CHOOSE EXPERIMENT</label><select id="compilerExperimentSelect" aria-label="Choose experiment for compiler">${experimentOptions}</select></div><div class="part-switcher" role="tablist" aria-label="Choose Experiment ${experimentId} compiler">${definitions.map(([key]) => `<button type="button" role="tab" data-select-part="${key}">${key}</button>`).join("")}</div>` + definitions.map(([key, title], index) => {
       const customDefault = index === 0 && item.code ? item.code : `# ${title}\n# Write or paste the Python code for this part here.`;
       let savedCode = savedCodes[key];
-      if (experimentId === 1 && migratePartCodes) savedCode = partCompilerDefaults[key] || customDefault;
+      if (experimentId === 1 && !savedCode?.includes("# Notebook source: exp1.ipynb")) savedCode = partCompilerDefaults[key] || customDefault;
       const hasBrokenPythonString = savedCode && /print\("\s*(?:Shape:|Numeric columns:|Missing values:|Scaled sample:|Cluster counts:|Centres \(scaled features\):)/.test(savedCode);
       const hasNestedDatasetFallback = savedCode && /if Path\("dataset\.csv"\)\.exists\(\):\s+# DATASET FALLBACK/.test(savedCode);
       if (experimentId === 6 && (hasBrokenPythonString || hasNestedDatasetFallback)) savedCode = partCompilerDefaults[key];
@@ -1689,7 +1692,8 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
 </script><script>
 (() => {
   const defaults = {
-    "1a": window.partCompilerDefaults?.["1a"] || `# Experiment 1(a): Read and inspect the car dataset
+    "1a": window.partCompilerDefaults?.["1a"] || `# Notebook source: exp1.ipynb
+# Experiment 1(a): Read and inspect the car dataset
 import pandas as pd
 from pathlib import Path
 
@@ -1711,14 +1715,16 @@ print("\\nColumn information:")
 df.info()
 print("\\nSummary statistics:")
 print(df.describe(include="all"))`,
-    "1b": window.partCompilerDefaults?.["1b"] || `# Experiment 1(b): Create and export student data as a text/CSV file
+    "1b": window.partCompilerDefaults?.["1b"] || `# Notebook source: exp1.ipynb
+# Experiment 1(b): Create and export student data as a text/CSV file
 import pandas as pd
 
 student_data = pd.DataFrame({"Roll_no": [10, 11, 12, 13], "name": ["Ganesh", "mani", "nithin", "Chandhu"], "Dept": ["CSE", "IT", "ECE", "CSE"]})
 student_data.to_csv("Student_output.txt")
 print("Student data written successfully to Student_output.txt")
 print(pd.read_csv("Student_output.txt"))`,
-    "1c": window.partCompilerDefaults?.["1c"] || `# Experiment 1(c): Write and read student data in JSON and Excel formats
+    "1c": window.partCompilerDefaults?.["1c"] || `# Notebook source: exp1.ipynb
+# Experiment 1(c): Write and read student data in JSON and Excel formats
 import pandas as pd
 import openpyxl
 
