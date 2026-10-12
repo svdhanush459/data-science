@@ -1298,6 +1298,8 @@ else:
     container.innerHTML = `<div class="part-switcher" role="tablist" aria-label="Choose Experiment ${experimentId} compiler">${definitions.map(([key]) => `<button type="button" role="tab" data-select-part="${key}">${key}</button>`).join("")}</div>` + definitions.map(([key, title], index) => {
       const customDefault = index === 0 && item.code ? item.code : `# ${title}\n# Write or paste the Python code for this part here.`;
       let savedCode = savedCodes[key];
+      const hasBrokenPythonString = savedCode && /print\("\s*(?:Shape:|Numeric columns:|Missing values:|Scaled sample:|Cluster counts:|Centres \(scaled features\):)/.test(savedCode);
+      if (experimentId === 6 && hasBrokenPythonString) savedCode = partCompilerDefaults[key];
       if (savedCode?.includes("# Write this part's Python code here.") && partCompilerDefaults[key]) savedCode = partCompilerDefaults[key];
       if (index > 0 && savedCode) {
         const expectedHeader = `# Experiment ${experimentId}(${key.slice(-1)})`;
