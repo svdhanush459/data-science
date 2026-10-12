@@ -746,6 +746,58 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
   let activeVideoUrl = "";
   let activeDataUrls = [];
   const partCompilerDefaults = {
+    "1a": `# Experiment 1(a): Read and inspect the car dataset
+import pandas as pd
+from pathlib import Path
+
+csv_path = Path("car_dataset_40x20.csv")
+if not csv_path.exists():
+    csv_files = sorted(Path(".").glob("*.csv"))
+    if csv_files:
+        csv_path = csv_files[0]
+    else:
+        print("CSV not uploaded; using a small sample dataset.")
+        df = pd.DataFrame({"car": ["Car A", "Car B", "Car C"], "mpg": [25.0, 31.5, 28.0], "horsepower": [110, 95, 120]})
+if csv_path.exists():
+    df = pd.read_csv(csv_path)
+print("First five rows:")
+print(df.head())
+print("\\nShape:", df.shape)
+print("\\nColumns:", list(df.columns))
+print("\\nColumn information:")
+df.info()
+print("\\nSummary statistics:")
+print(df.describe(include="all"))`,
+    "1b": `# Experiment 1(b): Create and export student data as a text/CSV file
+import pandas as pd
+
+student_data = pd.DataFrame({
+    "Roll_no": [10, 11, 12, 13],
+    "name": ["Ganesh", "mani", "nithin", "Chandhu"],
+    "Dept": ["CSE", "IT", "ECE", "CSE"],
+})
+student_data.to_csv("Student_output.txt")
+print("Student data written successfully to Student_output.txt")
+print("\\nReading Student_output.txt:")
+loaded_data = pd.read_csv("Student_output.txt")
+print(loaded_data)`,
+    "1c": `# Experiment 1(c): Write and read student data in JSON and Excel formats
+import pandas as pd
+import openpyxl
+
+student_data = pd.DataFrame({
+    "Roll_no": [10, 11, 12, 13],
+    "name": ["Ganesh", "mani", "nithin", "Chandhu"],
+    "Dept": ["CSE", "IT", "ECE", "CSE"],
+})
+student_data.to_json("Students.json", orient="records", indent=4)
+print("JSON file created")
+print("Student data from JSON:")
+print(pd.read_json("Students.json"))
+student_data.to_excel("Student.xlsx", sheet_name="Student details", index=False)
+print("Data written successfully in Excel")
+print("Data from Excel file:")
+print(pd.read_excel("Student.xlsx", sheet_name="Student details"))`,
     "6a": `# DATASET FALLBACK: upload dataset.csv or use the built-in sample data
 # Experiment 6(a): Load and inspect numeric data for clustering
 import pandas as pd
@@ -1307,12 +1359,13 @@ else:
       return [key, `${experimentId}(${letter}) · ${partDescription}`];
     });
     const firstPartSavedCode = savedCodes[definitions[0]?.[0]] || item.code || "";
-    const partCodeVersion = 2;
+    const partCodeVersion = experimentId === 1 ? 3 : 2;
     const migratePartCodes = item.partCodeVersion !== partCodeVersion;
     const experimentOptions = labs.map((entry) => `<option value="${Number(entry.id)}" ${Number(entry.id) === experimentId ? "selected" : ""}>Experiment ${String(entry.id).padStart(2, "0")} · ${escapeHtml(entry.title)}</option>`).join("");
     container.innerHTML = `<div class="compiler-experiment-picker"><label for="compilerExperimentSelect">CHOOSE EXPERIMENT</label><select id="compilerExperimentSelect" aria-label="Choose experiment for compiler">${experimentOptions}</select></div><div class="part-switcher" role="tablist" aria-label="Choose Experiment ${experimentId} compiler">${definitions.map(([key]) => `<button type="button" role="tab" data-select-part="${key}">${key}</button>`).join("")}</div>` + definitions.map(([key, title], index) => {
       const customDefault = index === 0 && item.code ? item.code : `# ${title}\n# Write or paste the Python code for this part here.`;
       let savedCode = savedCodes[key];
+      if (experimentId === 1 && migratePartCodes) savedCode = partCompilerDefaults[key] || customDefault;
       const hasBrokenPythonString = savedCode && /print\("\s*(?:Shape:|Numeric columns:|Missing values:|Scaled sample:|Cluster counts:|Centres \(scaled features\):)/.test(savedCode);
       const hasNestedDatasetFallback = savedCode && /if Path\("dataset\.csv"\)\.exists\(\):\s+# DATASET FALLBACK/.test(savedCode);
       if (experimentId === 6 && (hasBrokenPythonString || hasNestedDatasetFallback)) savedCode = partCompilerDefaults[key];
@@ -1361,7 +1414,12 @@ else:
         try {
           const runtime = await getPyodide();
           status.textContent = "Loading packages and datasets…";
-          await runtime.loadPackagesFromImports(editor.value);
+          const importsForPyodide = key === "1c" ? editor.value.replace(/^import openpyxl\s*$/m, "") : editor.value;
+          await runtime.loadPackagesFromImports(importsForPyodide);
+          if (key === "1c" && editor.value.includes("to_excel(")) {
+            status.textContent = "Loading Excel support…";
+            await runtime.runPythonAsync("import micropip\nawait micropip.install('openpyxl')");
+          }
           runtime.globals.set("lab_input", $("labInputData").value);
           const uploads = await readUploads(idForCompiler);
           for (const file of uploads.datasets || []) {
