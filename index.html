@@ -739,7 +739,8 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
   let activeVideoUrl = "";
   let activeDataUrls = [];
   const partCompilerDefaults = {
-    "6a": `# Experiment 6(a): Load and inspect numeric data for clustering
+    "6a": `# DATASET FALLBACK: upload dataset.csv or use the built-in sample data
+# Experiment 6(a): Load and inspect numeric data for clustering
 import pandas as pd
 from pathlib import Path
 
@@ -759,7 +760,8 @@ print("Shape:", df.shape)
 print("Numeric columns:", list(df.select_dtypes(include="number").columns))
 print("Missing values:")
 print(df.isna().sum())`,
-    "6b": `# Experiment 6(b): Select numeric features and clean missing values
+    "6b": `# DATASET FALLBACK: upload dataset.csv or use the built-in sample data
+# Experiment 6(b): Select numeric features and clean missing values
 import pandas as pd
 from pathlib import Path
 
@@ -774,7 +776,8 @@ print("Selected features:", list(clean_features.columns))
 print("Rows before cleaning:", len(features))
 print("Rows after dropping incomplete values:", len(clean_features))
 print(clean_features.head())`,
-    "6c": `# Experiment 6(c): Scale numeric features for fair distance comparisons
+    "6c": `# DATASET FALLBACK: upload dataset.csv or use the built-in sample data
+# Experiment 6(c): Scale numeric features for fair distance comparisons
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from pathlib import Path
@@ -793,7 +796,8 @@ print(scaled_df.mean().round(2))
 print()
 print("Scaled sample:")
 print(scaled_df.head())`,
-    "6d": `# Experiment 6(d): Compare cluster counts with the elbow method
+    "6d": `# DATASET FALLBACK: upload dataset.csv or use the built-in sample data
+# Experiment 6(d): Compare cluster counts with the elbow method
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
@@ -821,7 +825,8 @@ plt.ylabel("Inertia")
 plt.title("K-Means elbow method")
 plt.tight_layout()
 plt.show()`,
-    "6e": `# Experiment 6(e): Fit K-Means and assign cluster labels
+    "6e": `# DATASET FALLBACK: upload dataset.csv or use the built-in sample data
+# Experiment 6(e): Fit K-Means and assign cluster labels
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
@@ -846,7 +851,8 @@ print(clustered["cluster"].value_counts().sort_index())
 print()
 print("Centres (scaled features):")
 print(model.cluster_centers_.round(2))`,
-    "6f": `# Experiment 6(f): Evaluate cluster quality with silhouette score
+    "6f": `# DATASET FALLBACK: upload dataset.csv or use the built-in sample data
+# Experiment 6(f): Evaluate cluster quality with silhouette score
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
@@ -869,7 +875,8 @@ else:
         print("Silhouette score:", round(silhouette_score(scaled, labels), 3))
     else:
         print("A silhouette score needs at least two populated clusters.")`,
-    "6g": `# Experiment 6(g): Plot clusters and interpret their centres
+    "6g": `# DATASET FALLBACK: upload dataset.csv or use the built-in sample data
+# Experiment 6(g): Plot clusters and interpret their centres
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
@@ -1299,7 +1306,8 @@ else:
       const customDefault = index === 0 && item.code ? item.code : `# ${title}\n# Write or paste the Python code for this part here.`;
       let savedCode = savedCodes[key];
       const hasBrokenPythonString = savedCode && /print\("\s*(?:Shape:|Numeric columns:|Missing values:|Scaled sample:|Cluster counts:|Centres \(scaled features\):)/.test(savedCode);
-      if (experimentId === 6 && hasBrokenPythonString) savedCode = partCompilerDefaults[key];
+      const hasNestedDatasetFallback = savedCode && /if Path\("dataset\.csv"\)\.exists\(\):\s+# DATASET FALLBACK/.test(savedCode);
+      if (experimentId === 6 && (hasBrokenPythonString || hasNestedDatasetFallback)) savedCode = partCompilerDefaults[key];
       if (savedCode?.includes("# Write this part's Python code here.") && partCompilerDefaults[key]) savedCode = partCompilerDefaults[key];
       if (index > 0 && savedCode) {
         const expectedHeader = `# Experiment ${experimentId}(${key.slice(-1)})`;
