@@ -186,17 +186,30 @@ else:
     .module-number{display:inline-block;font-size:8px;font-weight:700;color:#3862bc;background:#edf2ff;border-radius:5px;padding:5px 7px}
     .module-card strong,.module-detail h3{font-size:12px;color:var(--navy)}
     .module-card>span:last-child{font-size:9px;line-height:1.6;color:var(--muted)}
-    .module-detail{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px}
-    .module-detail h3{margin:11px 0 6px}
-    .module-back{display:block;margin:0 0 14px;border:1px solid var(--line);background:#f7f9fd;color:#315fc4;border-radius:6px;padding:7px 10px;font-size:9px;cursor:pointer}
-    .module-upload-label{display:block;margin-top:17px;margin-bottom:6px;font-size:10px;font-weight:700;color:#53627e}
-    #modulePdfUpload{display:block;width:100%;max-width:440px;border:1px solid var(--line);border-radius:7px;padding:9px;background:#fbfcff;font-size:9px}
-    #moduleUploadStatus,.module-empty{display:block;margin:7px 0;font-size:9px;color:var(--muted)}
-    .module-pdf-list{display:grid;gap:7px;margin-top:12px}
-    .module-pdf{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid #e8edf5;border-radius:7px;padding:9px;font-size:9px}
-    .module-pdf span{flex:1;min-width:140px;overflow-wrap:anywhere}
-    .module-pdf a{color:var(--blue);font-weight:700;text-decoration:none}.module-pdf a:first-of-type{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 16px;border:1px solid #9bb6f4;border-radius:8px;background:#edf3ff;font-size:12px;letter-spacing:.01em}.module-pdf a:first-of-type:hover{background:#dce8ff;border-color:#7296ec}html[data-theme="dark"] .module-pdf a:first-of-type{background:#203658;border-color:#5276b9;color:#cfe0ff}html[data-theme="dark"] .module-pdf a:first-of-type:hover{background:#29466f}
-    @media(max-width:620px){.module-grid{grid-template-columns:1fr}.module-intro,.module-detail{padding:14px}}
+    .module-detail{position:relative;display:grid;grid-template-columns:156px minmax(0,1fr);align-items:center;gap:38px;min-height:320px;padding:54px 5%;overflow:hidden;background:#182333;border:1px solid #2d3d52;border-radius:22px;color:#e6edf7;box-shadow:0 18px 50px #07111d35}
+    .module-detail h3{margin:0 0 10px;color:#e6edf7;font-size:clamp(32px,4vw,52px);line-height:1.05;letter-spacing:-1.5px}
+    .module-back{position:absolute;top:18px;left:20px;z-index:1;border:1px solid #3b506c;background:transparent;color:#dce5f2;border-radius:8px;padding:8px 12px;font-size:11px;cursor:pointer}
+    .module-emblem{display:grid;place-items:center;width:156px;aspect-ratio:1;border:1px solid #55416d;border-radius:34px;background:linear-gradient(145deg,#392b4c,#2c233b);color:#c78cf4;font-size:38px;font-weight:800;letter-spacing:-1px}
+    .module-material-content{min-width:0}
+    .module-eyebrow{margin-bottom:18px;color:#dfbd68;font-size:13px;font-weight:800;letter-spacing:2px}
+    .module-description{margin:0 0 12px;color:#aab7c9;font-size:16px;line-height:1.55}
+    .module-upload-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:22px 0 12px}
+    #modulePdfUpload{display:none}
+    .module-add-pdf,.module-pdf a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border:1px solid #36465c;border-radius:12px;background:transparent;color:#e6edf7;font-size:15px;font-weight:750;text-decoration:none;cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+    .module-add-pdf{border-color:#dfbd68;background:#dfbd68;color:#182333}
+    .module-add-pdf:hover{background:#edcb79;border-color:#edcb79;transform:translateY(-1px)}
+    .module-pdf a:hover{background:#24364e;border-color:#6684aa}
+    .module-upload-row .module-add-pdf{min-height:48px;padding:0 22px}
+    #moduleUploadStatus,.module-empty{display:block;margin:10px 0;color:#aab7c9;font-size:13px}
+    .module-pdf-list{display:grid;gap:12px;margin-top:18px}
+    .module-pdf{display:grid;gap:14px;min-width:0}
+    .module-pdf span{overflow-wrap:anywhere;color:#e6edf7;font-size:16px;font-weight:750}
+    .module-pdf-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .module-pdf a{min-height:48px;padding:0 20px}
+    .module-pdf a:first-child{background:#203047}
+    .module-pdf a:last-child{color:#dfbd68}
+    @media(max-width:620px){.module-grid{grid-template-columns:1fr}.module-intro,.module-detail{padding:22px}.module-detail{grid-template-columns:1fr;gap:18px;padding-top:70px}.module-emblem{width:92px;border-radius:24px;font-size:28px}.module-eyebrow{margin-bottom:10px}.module-detail h3{font-size:36px}.module-description{font-size:14px}.module-pdf-actions{gap:8px}.module-add-pdf,.module-pdf a{min-height:44px;padding:0 14px;font-size:13px}}
+    @media(max-width:620px){.module-intro{padding:14px}}
     .profile{padding:18px}
     .profile h3{font-size:10px;margin-bottom:12px}
     .fields{gap:13px;padding:16px 0}
@@ -255,13 +268,12 @@ else:
     html[data-theme="dark"] .lab-nav button:hover,html[data-theme="dark"] .lab-nav button.active,html[data-theme="dark"] .edit,html[data-theme="dark"] .card-subparts button,html[data-theme="dark"] .part-switcher button,html[data-theme="dark"] .video-note-parts button{background:#223249;color:#a9c8ff;border-color:#3b506c}
     html[data-theme="dark"] .video-note-parts button small,html[data-theme="dark"] .card p,html[data-theme="dark"] .panel p,html[data-theme="dark"] .field span,html[data-theme="dark"] .field b{color:#aab7c9}
     html[data-theme="dark"] .analysis div,html[data-theme="dark"] .node,html[data-theme="dark"] .step,html[data-theme="dark"] .part-compiler{background:#131e2c;color:#dce5f2;border-color:#344258}
-    html[data-theme="dark"] .module-intro,html[data-theme="dark"] .module-card,html[data-theme="dark"] .module-detail{background:#182333;color:var(--ink);border-color:#344258}
+    html:not([data-theme="dark"]) .module-detail{background:linear-gradient(135deg,#182333,#202d40);border-color:#2d3d52;color:#e6edf7}
+    html[data-theme="dark"] .module-intro,html[data-theme="dark"] .module-card{background:#182333;color:var(--ink);border-color:#344258}
     html[data-theme="dark"] .module-intro h2,html[data-theme="dark"] .module-card strong,html[data-theme="dark"] .module-detail h3{color:#e6edf7}
     html[data-theme="dark"] .module-intro p,html[data-theme="dark"] .module-card>span:last-child,html[data-theme="dark"] .module-detail>p,html[data-theme="dark"] .module-upload-label,html[data-theme="dark"] #moduleUploadStatus,html[data-theme="dark"] .module-empty{color:#aab7c9}
     html[data-theme="dark"] .module-number{background:#223249;color:#a9c8ff}
-    html[data-theme="dark"] .module-back,html[data-theme="dark"] #modulePdfUpload{background:#111b29;color:#dce5f2;border-color:#3b506c}
-    html[data-theme="dark"] .module-pdf{background:#131e2c;color:#dce5f2;border-color:#344258}
-    html[data-theme="dark"] #modulePdfUpload::file-selector-button{border:1px solid #43536a;border-radius:6px;background:#223249;color:#e6edf7;padding:6px 9px}
+    html[data-theme="dark"] .module-back{background:#111b29;color:#dce5f2;border-color:#3b506c}
     html[data-theme="dark"] .progress{background:#2a3749}
     html[data-theme="dark"] .theme-toggle{background:#223249;color:#e7edf7;border-color:#43536a}
     .sectionhead{padding:0 0 14px;border-bottom:1px solid #e3eaf0}
@@ -376,11 +388,11 @@ else:
     modulePdfUrls.forEach((url) => URL.revokeObjectURL(url));
     modulePdfUrls = [];
     const list = $("modulePdfList");
-    if (!pdfFiles?.length) { list.innerHTML = '<p class="module-empty">No PDFs have been uploaded yet.</p>'; return; }
+    if (!pdfFiles?.length) { list.innerHTML = '<p class="module-empty">No PDF uploaded yet. Use “＋ Add PDF” to add your course material.</p>'; return; }
     list.innerHTML = pdfFiles.map((file, index) => {
       const url = URL.createObjectURL(file.blob);
       modulePdfUrls.push(url);
-      return `<div class="module-pdf"><span>${escapeHtml(file.name)} · ${(file.size / 1024).toFixed(1)} KB</span><a href="${url}" target="_blank" rel="noopener">Open PDF</a><a href="${url}" download="${escapeHtml(file.name)}">Download</a></div>`;
+      return `<div class="module-pdf"><span>${escapeHtml(file.name)} · ${(file.size / 1024).toFixed(1)} KB</span><div class="module-pdf-actions"><a href="${url}" target="_blank" rel="noopener">Open PDF ↗</a><a href="${url}" download="${escapeHtml(file.name)}">↓ Download</a></div></div>`;
     }).join("");
   }
   async function openModule(moduleId) {
@@ -389,8 +401,9 @@ else:
     const detail = $("moduleDetail");
     $("moduleGrid").hidden = true;
     detail.hidden = false;
-    detail.innerHTML = `<button class="module-back" type="button" id="moduleBack">← All modules</button><span class="module-number">MODULE ${String(activeModuleId).padStart(2, "0")}</span><h3>${escapeHtml(module.title)}</h3><p>${escapeHtml(module.description)}</p><label class="module-upload-label" for="modulePdfUpload">Upload PDF materials</label><input id="modulePdfUpload" type="file" accept="application/pdf,.pdf" multiple><small id="moduleUploadStatus">PDF files are saved in this browser.</small><div class="module-pdf-list" id="modulePdfList"></div>`;
+    detail.innerHTML = `<button class="module-back" type="button" id="moduleBack">← All modules</button><div class="module-emblem" aria-hidden="true">${String(activeModuleId).padStart(2, "0")}</div><div class="module-material-content"><div class="module-eyebrow">COURSE MATERIALS</div><h3>Module ${activeModuleId}</h3><p class="module-description">${escapeHtml(module.description)}</p><div class="module-upload-row"><button class="module-add-pdf" type="button" id="addModulePdf">＋ Add PDF</button><input id="modulePdfUpload" type="file" accept="application/pdf,.pdf" multiple></div><small id="moduleUploadStatus">PDFs are saved in this browser on this device.</small><div class="module-pdf-list" id="modulePdfList"></div></div>`;
     $("moduleBack").onclick = () => { detail.hidden = true; $("moduleGrid").hidden = false; };
+    $("addModulePdf").onclick = () => $("modulePdfUpload").click();
     const uploadId = `module-${activeModuleId}`;
     const saved = await readUploads(uploadId).catch(() => ({ modulePdfs: [] }));
     if (activeModuleId === Number(moduleId)) renderModulePdfs(saved.modulePdfs || []);
