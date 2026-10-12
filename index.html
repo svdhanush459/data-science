@@ -1196,6 +1196,7 @@ print(export_text(model, feature_names=list(X.columns)))
 print("Feature importance:")
 print(pd.Series(model.feature_importances_, index=X.columns).sort_values(ascending=False))`,
   };
+  window.partCompilerDefaults = partCompilerDefaults;
   const csvFallbackLoader = `# DATASET FALLBACK: use dataset.csv, another uploaded CSV, or sample data
 from pathlib import Path
 csv_path = Path("dataset.csv")
@@ -1598,7 +1599,7 @@ else:
         const item = labs.find((entry) => Number(entry.id) === experimentId);
         if (!item) return;
         item.partCodes = item.partCodes || {};
-        let code = item.partCodes[key] || defaults[key] || `# Experiment ${key}\n# Write this part's Python code here.`;
+        let code = item.partCodes[key] || defaults[key] || window.partCompilerDefaults?.[key] || `# Experiment ${key}\n# Write this part's Python code here.`;
         const expectedHeader = `# Experiment ${experimentId}(${key.slice(-1)})`;
         const savedHeader = code.match(/^#\s*Experiment\s+\d+\([a-z]\)/im)?.[0];
         if (savedHeader && savedHeader.toLowerCase() !== expectedHeader.toLowerCase()) code = defaults[key] || `# Experiment ${key}\n# Write this part's Python code here.`;
