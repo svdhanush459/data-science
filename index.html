@@ -262,6 +262,9 @@ else:
     .part-compiler{margin-top:11px;padding:11px;border:1px solid #dce3ef;border-radius:8px;background:#fbfcff}
     .part-compiler h4{margin:0 0 8px;color:#14264b;font-size:11px}
     .part-code{width:100%;min-height:125px;resize:vertical;padding:10px;border:1px solid #dce3ef;border-radius:7px;background:#fff;color:#1e2b45;font:10px/1.5 Consolas,monospace}
+    .compiler-experiment-picker{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:8px 0}
+    .compiler-experiment-picker label{font-size:9px;font-weight:800;letter-spacing:.7px;color:#65718a}
+    .compiler-experiment-picker select{width:min(380px,100%);height:36px;padding:0 10px;border:1px solid #dce3ef;border-radius:7px;background:#fff;color:#1e2b45;font:600 10px "Segoe UI",Arial,sans-serif}
     .card-subparts,.part-switcher{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
     .card-subparts button,.part-switcher button{border:1px solid #dce3ef;border-radius:6px;padding:6px 10px;background:#f4f7ff;color:#315fc4;font-size:9px;font-weight:700;cursor:pointer}
     .card-subparts button:hover,.part-switcher button:hover,.part-switcher button.active{background:#315fc4;color:#fff;border-color:#315fc4}
@@ -278,6 +281,8 @@ else:
     html[data-theme="dark"] .sectionhead{border-color:#344258}
     html[data-theme="dark"] .identity h1,html[data-theme="dark"] .intro h2,html[data-theme="dark"] .dtitle h2,html[data-theme="dark"] .panel h3,html[data-theme="dark"] .sectionhead h3,html[data-theme="dark"] .video-note-parts button strong,html[data-theme="dark"] .part-compiler h4{color:#e6edf7}
     html[data-theme="dark"] .search,html[data-theme="dark"] .search input,html[data-theme="dark"] .github,html[data-theme="dark"] .part-code,html[data-theme="dark"] .inputfield input,html[data-theme="dark"] .inputfield textarea{background:#111b29;color:var(--ink);border-color:var(--line)}
+    html[data-theme="dark"] .compiler-experiment-picker label{color:#aab7c9}
+    html[data-theme="dark"] .compiler-experiment-picker select{background:#111b29;color:var(--ink);border-color:var(--line)}
     html[data-theme="dark"] .lab-nav button,html[data-theme="dark"] .lab-nav button:hover,html[data-theme="dark"] .lab-nav button.active{color:#c3d0e2}
     html[data-theme="dark"] .lab-nav button:hover,html[data-theme="dark"] .lab-nav button.active,html[data-theme="dark"] .edit,html[data-theme="dark"] .card-subparts button,html[data-theme="dark"] .part-switcher button,html[data-theme="dark"] .video-note-parts button{background:#223249;color:#a9c8ff;border-color:#3b506c}
     html[data-theme="dark"] .video-note-parts button small,html[data-theme="dark"] .card p,html[data-theme="dark"] .panel p,html[data-theme="dark"] .field span,html[data-theme="dark"] .field b{color:#aab7c9}
@@ -1304,7 +1309,8 @@ else:
     const firstPartSavedCode = savedCodes[definitions[0]?.[0]] || item.code || "";
     const partCodeVersion = 2;
     const migratePartCodes = item.partCodeVersion !== partCodeVersion;
-    container.innerHTML = `<div class="part-switcher" role="tablist" aria-label="Choose Experiment ${experimentId} compiler">${definitions.map(([key]) => `<button type="button" role="tab" data-select-part="${key}">${key}</button>`).join("")}</div>` + definitions.map(([key, title], index) => {
+    const experimentOptions = labs.map((entry) => `<option value="${Number(entry.id)}" ${Number(entry.id) === experimentId ? "selected" : ""}>Experiment ${String(entry.id).padStart(2, "0")} · ${escapeHtml(entry.title)}</option>`).join("");
+    container.innerHTML = `<div class="compiler-experiment-picker"><label for="compilerExperimentSelect">CHOOSE EXPERIMENT</label><select id="compilerExperimentSelect" aria-label="Choose experiment for compiler">${experimentOptions}</select></div><div class="part-switcher" role="tablist" aria-label="Choose Experiment ${experimentId} compiler">${definitions.map(([key]) => `<button type="button" role="tab" data-select-part="${key}">${key}</button>`).join("")}</div>` + definitions.map(([key, title], index) => {
       const customDefault = index === 0 && item.code ? item.code : `# ${title}\n# Write or paste the Python code for this part here.`;
       let savedCode = savedCodes[key];
       const hasBrokenPythonString = savedCode && /print\("\s*(?:Shape:|Numeric columns:|Missing values:|Scaled sample:|Cluster counts:|Centres \(scaled features\):)/.test(savedCode);
@@ -1324,6 +1330,15 @@ else:
       item.partCodes[key] = code;
       return `<section class="part-compiler" id="compilerPanel${key}"><h4>${escapeHtml(title)} · Python Compiler</h4><textarea class="part-code" id="partCompiler${key}" spellcheck="false" aria-label="Code for ${escapeHtml(title)}">${escapeHtml(code)}</textarea><div class="compiler-bar"><button class="compiler-run" type="button" data-run-part="${key}">▶ Run ${key.toUpperCase()}</button><span class="compiler-status" id="partStatus${key}">Ready · runs separately</span></div><pre class="compiler-output" id="partOutput${key}">Output for ${key.toUpperCase()} will appear here.</pre></section>`;
     }).join("");
+    $("compilerExperimentSelect").addEventListener("change", (event) => {
+      const nextId = Number(event.currentTarget.value);
+      const nextItem = labs.find((entry) => Number(entry.id) === nextId);
+      if (!nextItem) return;
+      activePartKey = `${nextId}${partLettersFor(nextItem)[0] || "a"}`;
+      pendingPartKey = activePartKey;
+      window.openLab(nextId);
+      requestAnimationFrame(() => $("partsPanel")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    });
     item.partCodeVersion = partCodeVersion;
     save();
     definitions.forEach(([key]) => {
