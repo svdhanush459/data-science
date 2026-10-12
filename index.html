@@ -13,10 +13,11 @@ const seed=[
 {title:"Linear Regression for Prediction",desc:"Build a regression model, generate predictions, and evaluate how well it fits the data.",summary:"Linear Regression models the relationship between a target and input features. This experiment prepares data, fits a model, predicts values, and interprets evaluation measures.",analysis:["Features: identify variables that may explain the target.","Training: fit the regression model using training data.","Prediction: estimate target values for unseen examples.","Evaluation: review MAE, MSE, and R²."],architecture:["Input Dataset","Feature Selection & Preprocessing","Train / Test Split","Linear Regression Model","Prediction & Evaluation"],steps:["Import libraries and load a suitable dataset.","Select input features and the target variable.","Split data into training and testing sets.","Train a Linear Regression model.","Predict test values and evaluate with suitable metrics."],objectives:["Explain supervised regression.","Prepare feature and target data.","Train a regression model.","Evaluate predictions."],requirements:["Python 3","Pandas and NumPy","Scikit-learn","Jupyter Notebook","Regression dataset"],code:'import pandas as pd\\nfrom sklearn.model_selection import train_test_split\\nfrom sklearn.linear_model import LinearRegression\\nfrom sklearn.metrics import mean_absolute_error, r2_score\\n\\ndf = pd.read_csv(\"dataset.csv\")\\nX, y = df[[\"feature\"]], df[\"target\"]\\nX_train, X_test, y_train, y_test = train_test_split(X,y,test_size=.2,random_state=42)\\nmodel = LinearRegression().fit(X_train,y_train)\\npred = model.predict(X_test)\\nprint(mean_absolute_error(y_test,pred), r2_score(y_test,pred))',result:"Record the observed MAE and R² from your run and discuss possible error sources.",conclusion:"Linear Regression is an interpretable baseline for continuous prediction; usefulness depends on data and model assumptions."},
 {title:"Data Visualization with Python",desc:"Create informative charts and communicate insights from structured data.",summary:"Data visualization turns information into graphical representations. Suitable chart choice, clear labels, and careful interpretation support communication.",analysis:["Chart selection: choose plots according to data type and question.","Clarity: use meaningful titles, labels, scales, and legends.","Comparison: identify differences, trends, and possible outliers.","Communication: explain what the chart shows without overstating."],architecture:["Dataset","Data Selection & Preparation","Chart Selection","Visualization with Matplotlib","Interpretation & Communication"],steps:["Load and inspect the dataset.","Choose variables and define the chart question.","Select a suitable chart type.","Create the plot and add title, labels, and legend.","Interpret and save the visualization."],objectives:["Understand visualization types.","Create plots with Python.","Improve chart readability.","Communicate insights responsibly."],requirements:["Python 3","Pandas","Matplotlib","Jupyter Notebook","Sample dataset"],code:'import pandas as pd\\nimport matplotlib.pyplot as plt\\ndf = pd.read_csv(\"dataset.csv\")\\ndf.plot(kind=\"line\", x=\"date\", y=\"value\")\\nplt.title(\"Value over Time\")\\nplt.xlabel(\"Date\")\\nplt.ylabel(\"Value\")\\nplt.tight_layout()\\nplt.show()',result:"A labelled visualization that answers the chosen data question with a short interpretation.",conclusion:"Effective charts make patterns easier to inspect and share. Choose presentation based on the data and question."},
 {title:"Data Cleaning and Preprocessing",desc:"Prepare raw data by handling missing values, duplicates, and inconsistent formats.",summary:"Data cleaning and preprocessing convert raw records into a consistent format suitable for analysis or machine learning.",analysis:["Completeness: locate missing observations.","Consistency: inspect types, labels, units, and formats.","Duplicates: identify repeated records and decide how to handle them.","Validation: confirm the dataset is fit for its intended use."],architecture:["Raw Dataset","Profiling & Quality Checks","Cleaning Rules","Transformation & Validation","Processed Dataset"],steps:["Load the raw data and inspect its structure.","Measure missing values, duplicates, and inconsistent values.","Choose and document suitable cleaning methods.","Apply transformations and correct types or formats.","Validate and export the processed dataset."],objectives:["Identify data quality issues.","Apply cleaning techniques.","Transform data consistently.","Validate preprocessing."],requirements:["Python 3","Pandas","Jupyter Notebook","Raw CSV dataset"],code:'import pandas as pd\\ndf = pd.read_csv(\"raw_data.csv\")\\nprint(df.isna().sum())\\nprint(\"Duplicates:\", df.duplicated().sum())\\ndf = df.drop_duplicates()\\ndf[\"value\"] = df[\"value\"].fillna(df[\"value\"].median())\\ndf.to_csv(\"cleaned_data.csv\", index=False)',result:"Compare quality checks before and after cleaning and document any rows or values changed.",conclusion:"Preprocessing improves consistency. Cleaning decisions should be transparent and context-appropriate."},
-{title:"Classification Using Decision Trees",desc:"Train a decision tree classifier and evaluate predictions on labelled data.",summary:"A Decision Tree classifier learns feature-based splits to assign class labels. The lab demonstrates training, prediction, and evaluation on held-out examples.",analysis:["Features and labels: identify predictors and target class.","Splitting: keep training and test data separate.","Tree learning: fit splits that separate classes.","Evaluation: inspect accuracy, precision, and recall."],architecture:["Labelled Dataset","Preprocessing & Feature Selection","Train / Test Split","Decision Tree Classifier","Predictions & Evaluation"],steps:["Load a labelled classification dataset.","Inspect features, labels, and class distribution.","Prepare features and split data.","Train a Decision Tree classifier.","Predict test labels and evaluate results."],objectives:["Understand classification workflow.","Prepare labelled data.","Train a Decision Tree.","Interpret evaluation metrics."],requirements:["Python 3","Pandas","Scikit-learn","Jupyter Notebook","Labelled dataset"],code:'import pandas as pd\\nfrom sklearn.model_selection import train_test_split\\nfrom sklearn.tree import DecisionTreeClassifier\\nfrom sklearn.metrics import classification_report\\ndf = pd.read_csv(\"dataset.csv\")\\nX, y = df.drop(columns=[\"label\"]), df[\"label\"]\\nX_train,X_test,y_train,y_test = train_test_split(X,y,test_size=.2,random_state=42)\\nmodel = DecisionTreeClassifier(random_state=42).fit(X_train,y_train)\\nprint(classification_report(y_test,model.predict(X_test)))',result:"Record the classification report and discuss errors, class balance, and possible overfitting.",conclusion:"Decision Trees are interpretable classifiers. Evaluate them on unseen data and review class-specific metrics."}
-].map((e,i)=>({...e,id:i+1,video:"",github:"",duration:["30 min","35 min","25 min","30 min","40 min"][i]}));
+{title:"Classification Using Decision Trees",desc:"Train a decision tree classifier and evaluate predictions on labelled data.",summary:"A Decision Tree classifier learns feature-based splits to assign class labels. The lab demonstrates training, prediction, and evaluation on held-out examples.",analysis:["Features and labels: identify predictors and target class.","Splitting: keep training and test data separate.","Tree learning: fit splits that separate classes.","Evaluation: inspect accuracy, precision, and recall."],architecture:["Labelled Dataset","Preprocessing & Feature Selection","Train / Test Split","Decision Tree Classifier","Predictions & Evaluation"],steps:["Load a labelled classification dataset.","Inspect features, labels, and class distribution.","Prepare features and split data.","Train a Decision Tree classifier.","Predict test labels and evaluate results."],objectives:["Understand classification workflow.","Prepare labelled data.","Train a Decision Tree.","Interpret evaluation metrics."],requirements:["Python 3","Pandas","Scikit-learn","Jupyter Notebook","Labelled dataset"],code:'import pandas as pd\\nfrom sklearn.model_selection import train_test_split\\nfrom sklearn.tree import DecisionTreeClassifier\\nfrom sklearn.metrics import classification_report\\ndf = pd.read_csv(\"dataset.csv\")\\nX, y = df.drop(columns=[\"label\"]), df[\"label\"]\\nX_train,X_test,y_train,y_test = train_test_split(X,y,test_size=.2,random_state=42)\\nmodel = DecisionTreeClassifier(random_state=42).fit(X_train,y_train)\\nprint(classification_report(y_test,model.predict(X_test)))',result:"Record the classification report and discuss errors, class balance, and possible overfitting.",conclusion:"Decision Trees are interpretable classifiers. Evaluate them on unseen data and review class-specific metrics."},
+{title:"K-Means Clustering",desc:"Discover groups in numeric data with K-Means, choose a cluster count, and interpret the results.",summary:"K-Means is an unsupervised learning method that groups observations by assigning each point to its nearest centroid. This experiment prepares numeric features, scales them, compares candidate values of K, fits a final model, and reviews the clusters.",analysis:["Feature selection: choose meaningful numeric columns and handle missing values.","Scaling: standardize feature ranges so distance calculations are balanced.","Cluster count: compare inertia across candidate K values with an elbow plot.","Interpretation: inspect labels, centroids, and silhouette score."],architecture:["Numeric Dataset","Feature Selection & Missing-Value Handling","Standard Scaling","K-Means & Cluster Count Selection","Cluster Labels, Centroids & Interpretation"],steps:["Load a dataset and inspect its rows, columns, and numeric features.","Select suitable features and remove incomplete observations.","Standardize features before using distance-based clustering.","Compare inertia for several K values and select a practical cluster count.","Fit K-Means and assign a cluster label to each observation.","Evaluate separation with a silhouette score when possible.","Visualize the clusters and summarize what each group represents."],objectives:["Explain unsupervised clustering and centroids.","Prepare and scale numeric features for distance-based models.","Use the elbow method to compare cluster counts.","Fit K-Means and interpret labels, centroids, and silhouette score."],requirements:["Python 3","Pandas and NumPy","Scikit-learn","Matplotlib","Numeric CSV dataset"],parts:["Load and inspect numeric data for clustering","Select numeric features and clean missing values","Scale features for fair distance comparisons","Compare cluster counts with the elbow method","Fit K-Means and assign cluster labels","Evaluate cluster quality with silhouette score","Plot clusters and interpret their centres"],video:"https://www.youtube.com/watch?v=hBHoEbZohI0",code:'import pandas as pd\\nfrom sklearn.preprocessing import StandardScaler\\nfrom sklearn.cluster import KMeans\\ndf = pd.read_csv("dataset.csv")\\nfeatures = df.select_dtypes(include="number").dropna()\\nscaled = StandardScaler().fit_transform(features)\\nmodel = KMeans(n_clusters=3, random_state=42, n_init=10)\\nlabels = model.fit_predict(scaled)\\nprint("Rows clustered:", len(labels))\\nprint("Cluster counts:", pd.Series(labels).value_counts().sort_index().to_dict())\\nprint("Centres (scaled):\\n", model.cluster_centers_)',result:"Record the cluster counts and centres. Compare clusters against the original feature values and note any limitations.",conclusion:"K-Means can reveal useful groups when numeric features are prepared and scaled carefully. Interpret the selected K and clusters in the context of the data."}
+].map((e,i)=>({...e,id:i+1,video:e.video||"",github:"",duration:["30 min","35 min","25 min","30 min","40 min","45 min"][i]}));
 let labs=JSON.parse(localStorage.getItem("digitalLabmanualLabs")||"null")||seed,student=JSON.parse(localStorage.getItem("digitalLabmanualStudent")||"null")||{name:"dhanush sv",id:"MBU000000",section:"CSE-DS A",branch:"CSE - Data Science",faculty:"Faculty Name",designation:"Assistant Professor",subject:"DS-301",photo:""},progress=JSON.parse(localStorage.getItem("digitalLabmanualDone")||"{}"),currentId=1,tempPhoto="";
-const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));function initials(s){return(s||"ST").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()||"ST"}function save(){localStorage.setItem("digitalLabmanualLabs",JSON.stringify(labs));localStorage.setItem("digitalLabmanualStudent",JSON.stringify(student));localStorage.setItem("digitalLabmanualDone",JSON.stringify(progress))}function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1900)}
+try{if(!localStorage.getItem("digitalLabmanualExperiment6Seeded")){const experiment6=seed.find(item=>Number(item.id)===6);if(experiment6&&!labs.some(item=>Number(item.id)===6))labs.push(experiment6);localStorage.setItem("digitalLabmanualLabs",JSON.stringify(labs));localStorage.setItem("digitalLabmanualExperiment6Seeded","true")}}catch(error){console.warn("Could not migrate Experiment 6",error)}const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));function initials(s){return(s||"ST").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()||"ST"}function save(){localStorage.setItem("digitalLabmanualLabs",JSON.stringify(labs));localStorage.setItem("digitalLabmanualStudent",JSON.stringify(student));localStorage.setItem("digitalLabmanualDone",JSON.stringify(progress))}function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1900)}
 function renderProfile(){let a=initials(student.name);$("uAvatar").innerHTML=student.photo?`<img src="${student.photo}" alt="Student photo">`:a;$("pAvatar").innerHTML=student.photo?`<img src="${student.photo}" alt="Student photo">`:a;$("uName").textContent=$("pName").textContent=$("fName").textContent=student.name;if($("pRole"))$("pRole").textContent=student.designation||"Student";["id","section","branch","faculty","designation"].forEach(k=>$("f"+k[0].toUpperCase()+k.slice(1)).textContent=student[k]||"—");$("subject").textContent=student.subject||"—"}
 function renderCards(q=""){$("cards").innerHTML="";let arr=labs.filter(e=>(e.title+" "+e.desc).toLowerCase().includes(q.toLowerCase()));if(!arr.length){$("cards").innerHTML='<div class="panel">No experiments found.</div>';return}arr.forEach(e=>{let d=document.createElement("article");d.className="card";d.innerHTML=`<div class="ctop"><span class="tag">EXPERIMENT ${String(e.id).padStart(2,"0")}</span></div><div class="thumb"><span class="playicon">▶</span><small>VIDEO OVERVIEW · DS LAB</small></div><h4>${esc(e.title)}</h4><p>${esc(e.desc)}</p><div class="foot"><span>▤ ${e.steps.length} practical steps</span><b>OPEN LAB MANUAL →</b></div>`;d.onclick=()=>openLab(e.id);$("cards").appendChild(d)})}
 function lab(){return labs.find(e=>e.id===currentId)}function list(items){return(items||[]).map((s,i)=>`<div><i>${i+1}</i><span>${esc(s)}</span></div>`).join("")}
@@ -600,7 +601,7 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
   const lines = (id) => $(id).value.split(/\r?\n/).map((x) => x.trim()).filter(Boolean);
   let activePartKey = "1a";
   let pendingPartKey = "";
-  const knownPartLetters = { 1: ["a", "b", "c"], 2: ["a", "b"], 3: ["a", "b", "c", "d"], 4: ["a", "b", "c"], 5: ["a", "b", "c", "d"] };
+  const knownPartLetters = { 1: ["a", "b", "c"], 2: ["a", "b"], 3: ["a", "b", "c", "d"], 4: ["a", "b", "c"], 5: ["a", "b", "c", "d"], 6: ["a", "b", "c", "d", "e", "f", "g"] };
   function partLettersFor(item) {
     const id = Number(item.id);
     if (knownPartLetters[id]) return knownPartLetters[id];
@@ -738,6 +739,121 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
   let activeVideoUrl = "";
   let activeDataUrls = [];
   const partCompilerDefaults = {
+    "6a": `# Experiment 6(a): Load and inspect numeric data for clustering
+import pandas as pd
+
+df = pd.read_csv("dataset.csv")
+print("First five rows:")
+print(df.head())
+print("\nShape:", df.shape)
+print("\nNumeric columns:", list(df.select_dtypes(include="number").columns))
+print("\nMissing values:")
+print(df.isna().sum())`,
+    "6b": `# Experiment 6(b): Select numeric features and clean missing values
+import pandas as pd
+
+df = pd.read_csv("dataset.csv")
+features = df.select_dtypes(include="number")
+clean_features = features.dropna().copy()
+print("Selected features:", list(clean_features.columns))
+print("Rows before cleaning:", len(features))
+print("Rows after dropping incomplete values:", len(clean_features))
+print(clean_features.head())`,
+    "6c": `# Experiment 6(c): Scale numeric features for fair distance comparisons
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
+df = pd.read_csv("dataset.csv")
+features = df.select_dtypes(include="number").dropna()
+scaler = StandardScaler()
+scaled = scaler.fit_transform(features)
+scaled_df = pd.DataFrame(scaled, columns=features.columns, index=features.index)
+print("Scaled feature means (approximately zero):")
+print(scaled_df.mean().round(2))
+print("\nScaled sample:")
+print(scaled_df.head())`,
+    "6d": `# Experiment 6(d): Compare cluster counts with the elbow method
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("dataset.csv")
+features = df.select_dtypes(include="number").dropna()
+scaled = StandardScaler().fit_transform(features)
+max_k = min(6, len(scaled))
+inertias = []
+for k in range(1, max_k + 1):
+    model = KMeans(n_clusters=k, random_state=42, n_init=10)
+    model.fit(scaled)
+    inertias.append(model.inertia_)
+print("K values:", list(range(1, max_k + 1)))
+print("Inertia:", [round(value, 3) for value in inertias])
+plt.plot(range(1, max_k + 1), inertias, marker="o")
+plt.xlabel("Number of clusters (K)")
+plt.ylabel("Inertia")
+plt.title("K-Means elbow method")
+plt.tight_layout()
+plt.show()`,
+    "6e": `# Experiment 6(e): Fit K-Means and assign cluster labels
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+df = pd.read_csv("dataset.csv")
+features = df.select_dtypes(include="number").dropna()
+scaled = StandardScaler().fit_transform(features)
+k = min(3, len(features))
+model = KMeans(n_clusters=k, random_state=42, n_init=10)
+labels = model.fit_predict(scaled)
+clustered = features.copy()
+clustered["cluster"] = labels
+print(clustered.head(10))
+print("\nCluster counts:")
+print(clustered["cluster"].value_counts().sort_index())
+print("\nCentres (scaled features):")
+print(model.cluster_centers_.round(2))`,
+    "6f": `# Experiment 6(f): Evaluate cluster quality with silhouette score
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+df = pd.read_csv("dataset.csv")
+features = df.select_dtypes(include="number").dropna()
+scaled = StandardScaler().fit_transform(features)
+k = min(3, len(features) - 1)
+if k < 2:
+    print("Add more rows to evaluate at least two clusters.")
+else:
+    labels = KMeans(n_clusters=k, random_state=42, n_init=10).fit_predict(scaled)
+    if len(set(labels)) > 1:
+        print("Silhouette score:", round(silhouette_score(scaled, labels), 3))
+    else:
+        print("A silhouette score needs at least two populated clusters.")`,
+    "6g": `# Experiment 6(g): Plot clusters and interpret their centres
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+df = pd.read_csv("dataset.csv")
+features = df.select_dtypes(include="number").dropna()
+if features.shape[1] < 2:
+    raise ValueError("Choose at least two numeric features to plot clusters.")
+scaled = StandardScaler().fit_transform(features)
+k = min(3, len(features))
+model = KMeans(n_clusters=k, random_state=42, n_init=10)
+labels = model.fit_predict(scaled)
+plt.scatter(scaled[:, 0], scaled[:, 1], c=labels, cmap="viridis", s=50)
+plt.scatter(model.cluster_centers_[:, 0], model.cluster_centers_[:, 1], c="red", marker="X", s=180, label="Centroids")
+plt.xlabel(features.columns[0] + " (scaled)")
+plt.ylabel(features.columns[1] + " (scaled)")
+plt.title("K-Means cluster groups")
+plt.legend()
+plt.tight_layout()
+plt.show()
+print("Review each group using the cluster labels and scaled centroids.")`,
     "1a": `# Experiment 1(a): Load and inspect the dataset
 import pandas as pd
 
@@ -1534,7 +1650,7 @@ else:
   const root = document.getElementById("videoNoteParts");
   const detail = document.getElementById("detail");
   if (!root || !detail) return;
-  const expectedParts = { 1: ["a", "b", "c"], 2: ["a", "b"], 3: ["a", "b", "c", "d"], 4: ["a", "b", "c"], 5: ["a", "b", "c", "d"] };
+  const expectedParts = { 1: ["a", "b", "c"], 2: ["a", "b"], 3: ["a", "b", "c", "d"], 4: ["a", "b", "c"], 5: ["a", "b", "c", "d"], 6: ["a", "b", "c", "d", "e", "f", "g"] };
   function ensureVideoNoteParts() {
     if (!detail.classList.contains("show")) return;
     const item = labs.find((candidate) => Number(candidate.id) === Number(currentId));
