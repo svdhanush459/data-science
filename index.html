@@ -1359,7 +1359,7 @@ else:
       return [key, `${experimentId}(${letter}) · ${partDescription}`];
     });
     const firstPartSavedCode = savedCodes[definitions[0]?.[0]] || item.code || "";
-    const partCodeVersion = experimentId === 1 ? 3 : 2;
+    const partCodeVersion = experimentId === 1 ? 4 : 2;
     const migratePartCodes = item.partCodeVersion !== partCodeVersion;
     const experimentOptions = labs.map((entry) => `<option value="${Number(entry.id)}" ${Number(entry.id) === experimentId ? "selected" : ""}>Experiment ${String(entry.id).padStart(2, "0")} · ${escapeHtml(entry.title)}</option>`).join("");
     container.innerHTML = `<div class="compiler-experiment-picker"><label for="compilerExperimentSelect">CHOOSE EXPERIMENT</label><select id="compilerExperimentSelect" aria-label="Choose experiment for compiler">${experimentOptions}</select></div><div class="part-switcher" role="tablist" aria-label="Choose Experiment ${experimentId} compiler">${definitions.map(([key]) => `<button type="button" role="tab" data-select-part="${key}">${key}</button>`).join("")}</div>` + definitions.map(([key, title], index) => {
@@ -1689,37 +1689,44 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
 </script><script>
 (() => {
   const defaults = {
-    "1a": `# Experiment 1(a): Load and inspect the dataset
+    "1a": window.partCompilerDefaults?.["1a"] || `# Experiment 1(a): Read and inspect the car dataset
 import pandas as pd
-df = pd.read_csv("dataset.csv")
+from pathlib import Path
+
+csv_path = Path("car_dataset_40x20.csv")
+if not csv_path.exists():
+    csv_files = sorted(Path(".").glob("*.csv"))
+    if csv_files:
+        csv_path = csv_files[0]
+    else:
+        print("CSV not uploaded; using a small sample dataset.")
+        df = pd.DataFrame({"car": ["Car A", "Car B", "Car C"], "mpg": [25.0, 31.5, 28.0], "horsepower": [110, 95, 120]})
+if csv_path.exists():
+    df = pd.read_csv(csv_path)
+print("First five rows:")
 print(df.head())
 print("\\nShape:", df.shape)
+print("\\nColumns:", list(df.columns))
+print("\\nColumn information:")
+df.info()
 print("\\nSummary statistics:")
 print(df.describe(include="all"))`,
-    "1b": `# Experiment 1(b): Clean missing values and duplicate rows
+    "1b": window.partCompilerDefaults?.["1b"] || `# Experiment 1(b): Create and export student data as a text/CSV file
 import pandas as pd
-df = pd.read_csv("dataset.csv")
-print("Missing values before cleaning:")
-print(df.isna().sum())
-print("\\nDuplicate rows:", df.duplicated().sum())
-clean_df = df.drop_duplicates().copy()
-numeric_columns = clean_df.select_dtypes(include="number").columns
-clean_df[numeric_columns] = clean_df[numeric_columns].fillna(clean_df[numeric_columns].median())
-print("\\nMissing values after cleaning:")
-print(clean_df.isna().sum())
-print(clean_df.head())`,
-    "1c": `# Experiment 1(c): Summary statistics and histograms
+
+student_data = pd.DataFrame({"Roll_no": [10, 11, 12, 13], "name": ["Ganesh", "mani", "nithin", "Chandhu"], "Dept": ["CSE", "IT", "ECE", "CSE"]})
+student_data.to_csv("Student_output.txt")
+print("Student data written successfully to Student_output.txt")
+print(pd.read_csv("Student_output.txt"))`,
+    "1c": window.partCompilerDefaults?.["1c"] || `# Experiment 1(c): Write and read student data in JSON and Excel formats
 import pandas as pd
-import matplotlib.pyplot as plt
-df = pd.read_csv("dataset.csv")
-numeric_columns = df.select_dtypes(include="number").columns
-print(df.describe(include="all"))
-if len(numeric_columns):
-    df[numeric_columns].hist(figsize=(10, 6))
-    plt.tight_layout()
-    plt.show()
-else:
-    print("No numeric columns available for histograms.")`,
+import openpyxl
+
+student_data = pd.DataFrame({"Roll_no": [10, 11, 12, 13], "name": ["Ganesh", "mani", "nithin", "Chandhu"], "Dept": ["CSE", "IT", "ECE", "CSE"]})
+student_data.to_json("Students.json", orient="records", indent=4)
+print(pd.read_json("Students.json"))
+student_data.to_excel("Student.xlsx", sheet_name="Student details", index=False)
+print(pd.read_excel("Student.xlsx", sheet_name="Student details"))`,
   };
   function selectPart(key) {
     requestAnimationFrame(() => {
@@ -1733,7 +1740,7 @@ else:
         const savedHeader = code.match(/^#\s*Experiment\s+\d+\([a-z]\)/im)?.[0];
         if (savedHeader && savedHeader.toLowerCase() !== expectedHeader.toLowerCase()) code = defaults[key] || `# Experiment ${key}\n# Write this part's Python code here.`;
         item.partCodes[key] = code;
-        item.partCodeVersion = 2;
+        item.partCodeVersion = experimentId === 1 ? 4 : 2;
         save();
         const editor = $("labCodeInput");
         editor.value = code;
