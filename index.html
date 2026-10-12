@@ -208,6 +208,17 @@ else:
     .module-pdf a{min-height:48px;padding:0 20px}
     .module-pdf a:first-child{background:#203047}
     .module-pdf a:last-child{color:#dfbd68}
+    html:not([data-theme="dark"]) .module-detail{background:linear-gradient(120deg,#fff 0%,#fffafa 58%,#fbf1f3 100%);border-color:#eed9de;color:#17283d;box-shadow:0 16px 40px #80233310}
+    html:not([data-theme="dark"]) .module-detail h3,html:not([data-theme="dark"]) .module-pdf span{color:#17283d}
+    html:not([data-theme="dark"]) .module-back{background:#fff7f8;border-color:#ead1d7;color:#9f2334}
+    html:not([data-theme="dark"]) .module-emblem{background:linear-gradient(145deg,#fff0f3,#f7e7ec);border-color:#efd2da;color:#bd2032}
+    html:not([data-theme="dark"]) .module-eyebrow{color:#bd2032}
+    html:not([data-theme="dark"]) .module-description,html:not([data-theme="dark"]) #moduleUploadStatus,html:not([data-theme="dark"]) .module-empty{color:#65758a}
+    html:not([data-theme="dark"]) .module-add-pdf{background:#bd2032;border-color:#bd2032;color:#fff}
+    html:not([data-theme="dark"]) .module-add-pdf:hover{background:#a91c2d;border-color:#a91c2d}
+    html:not([data-theme="dark"]) .module-pdf a:first-child{background:#fff;border-color:#e8cbd2;color:#9f2334}
+    html:not([data-theme="dark"]) .module-pdf a:last-child{background:#fff7f8;border-color:#e8cbd2;color:#9f2334}
+    html:not([data-theme="dark"]) .module-pdf a:hover{background:#fbe9ed;border-color:#d99eaa}
     @media(max-width:620px){.module-grid{grid-template-columns:1fr}.module-intro,.module-detail{padding:22px}.module-detail{grid-template-columns:1fr;gap:18px;padding-top:70px}.module-emblem{width:92px;border-radius:24px;font-size:28px}.module-eyebrow{margin-bottom:10px}.module-detail h3{font-size:36px}.module-description{font-size:14px}.module-pdf-actions{gap:8px}.module-add-pdf,.module-pdf a{min-height:44px;padding:0 14px;font-size:13px}}
     @media(max-width:620px){.module-intro{padding:14px}}
     .profile{padding:18px}
@@ -268,7 +279,6 @@ else:
     html[data-theme="dark"] .lab-nav button:hover,html[data-theme="dark"] .lab-nav button.active,html[data-theme="dark"] .edit,html[data-theme="dark"] .card-subparts button,html[data-theme="dark"] .part-switcher button,html[data-theme="dark"] .video-note-parts button{background:#223249;color:#a9c8ff;border-color:#3b506c}
     html[data-theme="dark"] .video-note-parts button small,html[data-theme="dark"] .card p,html[data-theme="dark"] .panel p,html[data-theme="dark"] .field span,html[data-theme="dark"] .field b{color:#aab7c9}
     html[data-theme="dark"] .analysis div,html[data-theme="dark"] .node,html[data-theme="dark"] .step,html[data-theme="dark"] .part-compiler{background:#131e2c;color:#dce5f2;border-color:#344258}
-    html:not([data-theme="dark"]) .module-detail{background:linear-gradient(135deg,#182333,#202d40);border-color:#2d3d52;color:#e6edf7}
     html[data-theme="dark"] .module-intro,html[data-theme="dark"] .module-card{background:#182333;color:var(--ink);border-color:#344258}
     html[data-theme="dark"] .module-intro h2,html[data-theme="dark"] .module-card strong,html[data-theme="dark"] .module-detail h3{color:#e6edf7}
     html[data-theme="dark"] .module-intro p,html[data-theme="dark"] .module-card>span:last-child,html[data-theme="dark"] .module-detail>p,html[data-theme="dark"] .module-upload-label,html[data-theme="dark"] #moduleUploadStatus,html[data-theme="dark"] .module-empty{color:#aab7c9}
