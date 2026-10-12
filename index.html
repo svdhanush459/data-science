@@ -1421,6 +1421,7 @@ else:
           await runtime.loadPackagesFromImports(importsForPyodide);
           if (key === "1c" && editor.value.includes("to_excel(")) {
             status.textContent = "Loading Excel support…";
+            await runtime.loadPackage("micropip");
             await runtime.runPythonAsync("import micropip\nawait micropip.install('openpyxl')");
           }
           runtime.globals.set("lab_input", $("labInputData").value);
