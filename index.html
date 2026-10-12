@@ -741,18 +741,33 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
   const partCompilerDefaults = {
     "6a": `# Experiment 6(a): Load and inspect numeric data for clustering
 import pandas as pd
+from pathlib import Path
 
-df = pd.read_csv("dataset.csv")
+if Path("dataset.csv").exists():
+    df = pd.read_csv("dataset.csv")
+else:
+    print("No dataset.csv uploaded; using built-in sample data.")
+    df = pd.DataFrame({
+        "hours": [2, 3, 4, 5, 6, 7, 8, 9],
+        "score": [52, 58, 63, 69, 73, 81, 86, 92],
+        "attendance": [60, 65, 70, 72, 78, 84, 88, 95],
+    })
 print("First five rows:")
 print(df.head())
-print("\nShape:", df.shape)
-print("\nNumeric columns:", list(df.select_dtypes(include="number").columns))
-print("\nMissing values:")
+print()
+print("Shape:", df.shape)
+print("Numeric columns:", list(df.select_dtypes(include="number").columns))
+print("Missing values:")
 print(df.isna().sum())`,
     "6b": `# Experiment 6(b): Select numeric features and clean missing values
 import pandas as pd
+from pathlib import Path
 
-df = pd.read_csv("dataset.csv")
+if Path("dataset.csv").exists():
+    df = pd.read_csv("dataset.csv")
+else:
+    print("No dataset.csv uploaded; using built-in sample data.")
+    df = pd.DataFrame({"hours": [2, 3, 4, 5, 6, 7, 8, 9], "score": [52, 58, 63, 69, 73, 81, 86, 92], "attendance": [60, 65, 70, 72, 78, 84, 88, 95]})
 features = df.select_dtypes(include="number")
 clean_features = features.dropna().copy()
 print("Selected features:", list(clean_features.columns))
@@ -762,23 +777,34 @@ print(clean_features.head())`,
     "6c": `# Experiment 6(c): Scale numeric features for fair distance comparisons
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+from pathlib import Path
 
-df = pd.read_csv("dataset.csv")
+if Path("dataset.csv").exists():
+    df = pd.read_csv("dataset.csv")
+else:
+    print("No dataset.csv uploaded; using built-in sample data.")
+    df = pd.DataFrame({"hours": [2, 3, 4, 5, 6, 7, 8, 9], "score": [52, 58, 63, 69, 73, 81, 86, 92], "attendance": [60, 65, 70, 72, 78, 84, 88, 95]})
 features = df.select_dtypes(include="number").dropna()
 scaler = StandardScaler()
 scaled = scaler.fit_transform(features)
 scaled_df = pd.DataFrame(scaled, columns=features.columns, index=features.index)
 print("Scaled feature means (approximately zero):")
 print(scaled_df.mean().round(2))
-print("\nScaled sample:")
+print()
+print("Scaled sample:")
 print(scaled_df.head())`,
     "6d": `# Experiment 6(d): Compare cluster counts with the elbow method
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+from pathlib import Path
 
-df = pd.read_csv("dataset.csv")
+if Path("dataset.csv").exists():
+    df = pd.read_csv("dataset.csv")
+else:
+    print("No dataset.csv uploaded; using built-in sample data.")
+    df = pd.DataFrame({"hours": [2, 3, 4, 5, 6, 7, 8, 9], "score": [52, 58, 63, 69, 73, 81, 86, 92], "attendance": [60, 65, 70, 72, 78, 84, 88, 95]})
 features = df.select_dtypes(include="number").dropna()
 scaled = StandardScaler().fit_transform(features)
 max_k = min(6, len(scaled))
@@ -799,8 +825,13 @@ plt.show()`,
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
+from pathlib import Path
 
-df = pd.read_csv("dataset.csv")
+if Path("dataset.csv").exists():
+    df = pd.read_csv("dataset.csv")
+else:
+    print("No dataset.csv uploaded; using built-in sample data.")
+    df = pd.DataFrame({"hours": [2, 3, 4, 5, 6, 7, 8, 9], "score": [52, 58, 63, 69, 73, 81, 86, 92], "attendance": [60, 65, 70, 72, 78, 84, 88, 95]})
 features = df.select_dtypes(include="number").dropna()
 scaled = StandardScaler().fit_transform(features)
 k = min(3, len(features))
@@ -809,17 +840,24 @@ labels = model.fit_predict(scaled)
 clustered = features.copy()
 clustered["cluster"] = labels
 print(clustered.head(10))
-print("\nCluster counts:")
+print()
+print("Cluster counts:")
 print(clustered["cluster"].value_counts().sort_index())
-print("\nCentres (scaled features):")
+print()
+print("Centres (scaled features):")
 print(model.cluster_centers_.round(2))`,
     "6f": `# Experiment 6(f): Evaluate cluster quality with silhouette score
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
+from pathlib import Path
 
-df = pd.read_csv("dataset.csv")
+if Path("dataset.csv").exists():
+    df = pd.read_csv("dataset.csv")
+else:
+    print("No dataset.csv uploaded; using built-in sample data.")
+    df = pd.DataFrame({"hours": [2, 3, 4, 5, 6, 7, 8, 9], "score": [52, 58, 63, 69, 73, 81, 86, 92], "attendance": [60, 65, 70, 72, 78, 84, 88, 95]})
 features = df.select_dtypes(include="number").dropna()
 scaled = StandardScaler().fit_transform(features)
 k = min(3, len(features) - 1)
@@ -836,8 +874,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
+from pathlib import Path
 
-df = pd.read_csv("dataset.csv")
+if Path("dataset.csv").exists():
+    df = pd.read_csv("dataset.csv")
+else:
+    print("No dataset.csv uploaded; using built-in sample data.")
+    df = pd.DataFrame({"hours": [2, 3, 4, 5, 6, 7, 8, 9], "score": [52, 58, 63, 69, 73, 81, 86, 92], "attendance": [60, 65, 70, 72, 78, 84, 88, 95]})
 features = df.select_dtypes(include="number").dropna()
 if features.shape[1] < 2:
     raise ValueError("Choose at least two numeric features to plot clusters.")
