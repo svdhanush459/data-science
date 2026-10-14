@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="assets/css/site.css">
   <style>
     :root{--p-bg:#f7f6f6;--p-surface:#fff;--p-soft:#fbfafa;--p-text:#27272b;--p-muted:#70717a;--p-line:#e5dfe0;--p-red:#c32637;--p-shadow:#17171912}
-    html[data-theme="dark"]{--p-bg:#101722;--p-surface:#182333;--p-soft:#111b29;--p-text:#e3eaf4;--p-muted:#a4b1c3;--p-line:#344258;--p-red:#d9717c;--p-shadow:#0008;color-scheme:dark}
+    html[data-theme="dark"]{--p-bg:#101722;--p-surface:#182333;--p-soft:#111b29;--p-text:#e3eaf4;--p-muted:#a4b1c3;--p-line:#344258;--p-red:#72a8ff;--p-shadow:#0008;color-scheme:dark}
     body{min-height:100vh;background:radial-gradient(ellipse at 88% 0%,#f5e8e9 0,transparent 34%),linear-gradient(180deg,#fbfafa 0,#f4f3f3 520px);color:var(--p-text);transition:background .2s,color .2s}
     html[data-theme="dark"] body{background:linear-gradient(180deg,#111a26 0,#0d141e 420px);color:var(--p-text)}
     .profile-page{max-width:1060px;margin:0 auto;padding:26px 24px 60px}
@@ -19,7 +19,7 @@
     .back-link:hover,.theme-toggle:hover{border-color:var(--p-red);color:var(--p-red)}
     .profile-hero{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:24px;margin-top:24px;padding:30px;border:1px solid var(--p-line);border-radius:22px;background:linear-gradient(115deg,var(--p-surface),var(--p-soft));box-shadow:0 18px 50px var(--p-shadow)}
     html[data-theme="dark"] .profile-hero{background:linear-gradient(115deg,#1b3038,#1b2732 60%,#302b22);border-color:#334b50}
-    .profile-hero:after{content:"";position:absolute;z-index:-1;width:180px;height:90px;right:5%;top:18%;opacity:.15;border:18px solid var(--p-red);border-radius:50%;box-shadow:46px 3px 0 -8px var(--p-red),-42px 5px 0 -8px var(--p-red)}
+    .profile-hero:after{display:none}
     .profile-avatar{width:104px;height:104px;display:grid;place-items:center;overflow:hidden;border:4px solid var(--p-surface);border-radius:50%;background:color-mix(in srgb,var(--p-red) 12%,var(--p-surface));color:var(--p-red);font-size:29px;font-weight:850;box-shadow:0 8px 25px var(--p-shadow)}
     .profile-avatar img{width:100%;height:100%;object-fit:cover}
     .eyebrow{margin:0 0 8px;color:var(--p-red);font-size:10px;font-weight:850;letter-spacing:1.8px}
@@ -79,17 +79,17 @@
   </main>
   <script>
     (() => {
-      const defaults = {name:"dhanush sv", id:"MBU000000", section:"CSE-DS A", branch:"CSE - Data Science", faculty:"Faculty Name", designation:"Assistant Professor", subject:"DS-301", photo:"", github:"", linkedin:"", socialName:"", socialUrl:""};
+      const defaults = {name:"dhanush sv", id:"MBU000000", section:"CSE-DS A", branch:"CSE - Data Science", faculty:"Faculty Name", designation:"Student", subject:"DS-301", photo:"", github:"", linkedin:"", socialName:"", socialUrl:""};
       let student = defaults;
       try { student = {...defaults, ...JSON.parse(localStorage.getItem("digitalLabmanualStudent") || "{}")}; } catch (_) {}
       const text = (id, value) => { document.getElementById(id).textContent = value || "—"; };
       text("profileName", student.name);
-      text("profileHeadline", `${student.designation || "Data Science Student"} · ${student.branch || "Mohan Babu University"}`);
+      text("profileHeadline", `Student · ${student.branch || "CSE - Data Science"}`);
 
       const avatar = document.getElementById("profileAvatar");
       if (student.photo && /^data:image\//i.test(student.photo)) { const image = document.createElement("img"); image.src = student.photo; image.alt = ""; avatar.replaceChildren(image); }
       else avatar.textContent = (student.name || "Student").trim().split(/\s+/).slice(0,2).map(part => part[0] || "").join("").toUpperCase();
-      const rows = [["Student ID",student.id],["Section",student.section],["Branch",student.branch],["Subject",student.subject],["Faculty",student.faculty],["Designation",student.designation]];
+      const rows = [["Student ID",student.id],["Section",student.section],["Branch",student.branch],["Subject",student.subject],["Faculty",student.faculty],["Role","Student"]];
       const details = document.getElementById("identityDetails");
       for (const [label,value] of rows) { const box=document.createElement("div"); box.className="profile-detail"; const dt=document.createElement("dt"); dt.textContent=label; const dd=document.createElement("dd"); dd.textContent=value || "—"; box.append(dt,dd); details.append(box); }
       const candidates=[["GitHub",student.github],["LinkedIn",student.linkedin],[student.socialName || "Social profile",student.socialUrl]];
