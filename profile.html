@@ -7,9 +7,10 @@
   <title>Student Profile | Digital Laboratory</title>
   <link rel="stylesheet" href="assets/css/site.css">
   <style>
-    :root{--p-bg:#f5f2ee;--p-surface:#fffdfb;--p-soft:#fff5f2;--p-text:#292a30;--p-muted:#77737a;--p-line:#eadbd8;--p-red:#b51f31;--p-shadow:#34131912}
-    body[data-theme="dark"]{--p-bg:#101217;--p-surface:#191c23;--p-soft:#211b21;--p-text:#f1e9e8;--p-muted:#b7aeb3;--p-line:#39323a;--p-red:#f04b5b;--p-shadow:#0008}
-    body{min-height:100vh;background:radial-gradient(ellipse at 90% 0%,color-mix(in srgb,var(--p-red) 10%,transparent),transparent 38%),var(--p-bg);color:var(--p-text);transition:background .2s,color .2s}
+    :root{--p-bg:#f7f6f6;--p-surface:#fff;--p-soft:#fbfafa;--p-text:#27272b;--p-muted:#70717a;--p-line:#e5dfe0;--p-red:#c32637;--p-shadow:#17171912}
+    html[data-theme="dark"]{--p-bg:#101722;--p-surface:#182333;--p-soft:#111b29;--p-text:#e3eaf4;--p-muted:#a4b1c3;--p-line:#344258;--p-red:#d9717c;--p-shadow:#0008;color-scheme:dark}
+    body{min-height:100vh;background:radial-gradient(ellipse at 88% 0%,#f5e8e9 0,transparent 34%),linear-gradient(180deg,#fbfafa 0,#f4f3f3 520px);color:var(--p-text);transition:background .2s,color .2s}
+    html[data-theme="dark"] body{background:linear-gradient(180deg,#111a26 0,#0d141e 420px);color:var(--p-text)}
     .profile-page{max-width:1060px;margin:0 auto;padding:26px 24px 60px}
     .profile-nav{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:14px 18px;border:1px solid var(--p-line);border-radius:16px;background:var(--p-surface);box-shadow:0 12px 35px var(--p-shadow)}
     .profile-brand{font-size:11px;font-weight:850;letter-spacing:1.5px;color:var(--p-red)}
@@ -17,6 +18,7 @@
     .back-link,.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 13px;border:1px solid var(--p-line);border-radius:10px;background:var(--p-surface);color:var(--p-text);font-size:11px;font-weight:750;text-decoration:none;cursor:pointer}
     .back-link:hover,.theme-toggle:hover{border-color:var(--p-red);color:var(--p-red)}
     .profile-hero{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:24px;margin-top:24px;padding:30px;border:1px solid var(--p-line);border-radius:22px;background:linear-gradient(115deg,var(--p-surface),var(--p-soft));box-shadow:0 18px 50px var(--p-shadow)}
+    html[data-theme="dark"] .profile-hero{background:linear-gradient(115deg,#1b3038,#1b2732 60%,#302b22);border-color:#334b50}
     .profile-hero:after{content:"";position:absolute;z-index:-1;width:180px;height:90px;right:5%;top:18%;opacity:.15;border:18px solid var(--p-red);border-radius:50%;box-shadow:46px 3px 0 -8px var(--p-red),-42px 5px 0 -8px var(--p-red)}
     .profile-avatar{width:104px;height:104px;display:grid;place-items:center;overflow:hidden;border:4px solid var(--p-surface);border-radius:50%;background:color-mix(in srgb,var(--p-red) 12%,var(--p-surface));color:var(--p-red);font-size:29px;font-weight:850;box-shadow:0 8px 25px var(--p-shadow)}
     .profile-avatar img{width:100%;height:100%;object-fit:cover}
@@ -50,7 +52,7 @@
   <div class="top"></div>
   <main class="profile-page">
     <nav class="profile-nav" aria-label="Profile navigation">
-      <span class="profile-brand">DIGITAL LABORATORY · 暁 AKATSUKI</span>
+      <span class="profile-brand">DIGITAL LABORATORY</span>
       <div class="nav-actions"><button class="theme-toggle" id="themeToggle" type="button">☾ Dark mode</button><a class="back-link" href="index.html">← Back to Home</a></div>
     </nav>
     <section class="profile-hero" aria-labelledby="profileName">
@@ -94,10 +96,10 @@
       const links=document.getElementById("profileLinks");
       for (const [label,raw] of candidates) { try { const url=new URL(raw); if(url.protocol!=="https:")continue; const a=document.createElement("a");a.href=url.href;a.target="_blank";a.rel="noopener noreferrer";a.textContent=`${label} ↗`;links.append(a); } catch (_) {} }
 
-      const themeKey="digitalLabmanualProfileTheme", themeButton=document.getElementById("themeToggle");
-      const setTheme=theme=>{document.body.dataset.theme=theme;try{localStorage.setItem(themeKey,theme);}catch(_){}themeButton.textContent=theme==="dark"?"☀ Light mode":"☾ Dark mode";document.querySelector('meta[name="theme-color"]').content=theme==="dark"?"#101217":"#f5f2ee";};
+      const themeKey="digitalLabTheme", themeButton=document.getElementById("themeToggle");
+      const setTheme=theme=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem(themeKey,theme);}catch(_){}themeButton.textContent=theme==="dark"?"☀ Light mode":"☾ Dark mode";document.querySelector('meta[name="theme-color"]').content=theme==="dark"?"#101722":"#f7f6f6";};
       let savedTheme="light";try{savedTheme=localStorage.getItem(themeKey)||"light";}catch(_){}setTheme(savedTheme==="dark"?"dark":"light");
-      themeButton.addEventListener("click",()=>setTheme(document.body.dataset.theme==="dark"?"light":"dark"));
+      themeButton.addEventListener("click",()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"));
 
       const careerKey="digitalLabmanualCareerItems", careerItems=document.getElementById("careerItems");
       let savedItems=[];try{savedItems=JSON.parse(localStorage.getItem(careerKey)||"[]");if(!Array.isArray(savedItems))savedItems=[];}catch(_){}
