@@ -365,7 +365,7 @@ else:
   moduleSection.className = "module-view";
   moduleSection.id = "modulesView";
   moduleSection.hidden = true;
-  moduleSection.innerHTML = `<div class="module-intro"><h2>DATA SCIENCE MODULES</h2><p>Choose a module to upload or open its PDF materials.</p></div><div class="module-grid" id="moduleGrid">${moduleItems.map((module, index) => `<button class="module-card" type="button" data-open-module="${index + 1}"><span class="module-number">MODULE ${String(index + 1).padStart(2, "0")}</span><strong>${escapeHtml(module.title)}</strong><span>${escapeHtml(module.description)}</span></button>`).join("")}</div><section class="module-detail" id="moduleDetail" hidden></section>`;
+  moduleSection.innerHTML = `<div class="module-intro"><h2>DATA SCIENCE MODULES</h2><p>Choose a module to view its course materials.</p></div><div class="module-grid" id="moduleGrid">${moduleItems.map((module, index) => `<button class="module-card" type="button" data-open-module="${index + 1}"><span class="module-number">MODULE ${String(index + 1).padStart(2, "0")}</span><strong>${escapeHtml(module.title)}</strong><span>${escapeHtml(module.description)}</span></button>`).join("")}</div><section class="module-detail" id="moduleDetail" hidden></section>`;
   document.querySelector("#dashboard").after(moduleSection);
   let activeModuleId = 0;
   let modulePdfUrls = [];
@@ -377,7 +377,7 @@ else:
     modulePdfUrls.forEach((url) => URL.revokeObjectURL(url));
     modulePdfUrls = [];
     const list = $("modulePdfList");
-    if (!pdfFiles?.length) { list.innerHTML = '<p class="module-empty">No PDF uploaded yet. Use “＋ Add PDF” to add your course material.</p>'; return; }
+    if (!pdfFiles?.length) { list.innerHTML = '<p class="module-empty">No published PDF handout is available yet.</p>'; return; }
     list.innerHTML = pdfFiles.map((file, index) => {
       const url = URL.createObjectURL(file.blob);
       modulePdfUrls.push(url);
@@ -390,7 +390,7 @@ else:
     const detail = $("moduleDetail");
     $("moduleGrid").hidden = true;
     detail.hidden = false;
-    detail.innerHTML = `<button class="module-back" type="button" id="moduleBack">← All modules</button><div class="module-emblem" aria-hidden="true">${String(activeModuleId).padStart(2, "0")}</div><div class="module-material-content"><div class="module-eyebrow">COURSE MATERIALS</div><h3>Module ${activeModuleId}</h3><p class="module-description">${escapeHtml(module.description)}</p><div class="module-upload-row"><button class="module-add-pdf" type="button" id="addModulePdf">＋ Add PDF</button><input id="modulePdfUpload" type="file" accept="application/pdf,.pdf" multiple></div><small id="moduleUploadStatus">PDFs are saved in this browser on this device.</small><div class="module-pdf-list" id="modulePdfList"></div></div>`;
+    detail.innerHTML = `<button class="module-back" type="button" id="moduleBack">← All modules</button><div class="module-emblem" aria-hidden="true">${String(activeModuleId).padStart(2, "0")}</div><div class="module-material-content"><div class="module-eyebrow">COURSE MATERIALS</div><h3>Module ${activeModuleId}</h3><p class="module-description">${escapeHtml(module.description)}</p><small id="moduleUploadStatus">Course handouts are managed by the site developer.</small><div class="module-pdf-list" id="modulePdfList"></div></div>`;
     $("moduleBack").onclick = () => { detail.hidden = true; $("moduleGrid").hidden = false; };
     $("addModulePdf").onclick = () => $("modulePdfUpload").click();
     const uploadId = `module-${activeModuleId}`;
