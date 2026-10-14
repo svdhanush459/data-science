@@ -3,55 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#10243b">
+  <meta name="theme-color" content="#101217">
   <title>Student Profile | Digital Laboratory</title>
   <link rel="stylesheet" href="assets/css/site.css">
   <style>
-    body{min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#dceafe 0,transparent 38%),var(--bg)}
+    :root{--p-bg:#f5f2ee;--p-surface:#fffdfb;--p-soft:#fff5f2;--p-text:#292a30;--p-muted:#77737a;--p-line:#eadbd8;--p-red:#b51f31;--p-shadow:#34131912}
+    body[data-theme="dark"]{--p-bg:#101217;--p-surface:#191c23;--p-soft:#211b21;--p-text:#f1e9e8;--p-muted:#b7aeb3;--p-line:#39323a;--p-red:#f04b5b;--p-shadow:#0008}
+    body{min-height:100vh;background:radial-gradient(ellipse at 90% 0%,color-mix(in srgb,var(--p-red) 10%,transparent),transparent 38%),var(--p-bg);color:var(--p-text);transition:background .2s,color .2s}
     .profile-page{max-width:1060px;margin:0 auto;padding:26px 24px 60px}
-    .profile-nav{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:14px 18px;border:1px solid var(--line);border-radius:16px;background:#ffffffdc;box-shadow:0 12px 35px #14264b0b}
-    .profile-brand{font-size:11px;font-weight:800;letter-spacing:1.4px;color:var(--navy)}
-    .back-link{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--navy);font-size:11px;font-weight:700;text-decoration:none}
-    .back-link:hover{border-color:#9db4e9;background:#f5f8ff}
-    .profile-hero{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:24px;margin-top:24px;padding:30px;border:1px solid #d8e3ef;border-radius:22px;background:linear-gradient(125deg,#fff,#f3f8ff);box-shadow:0 18px 50px #14264b12}
-    .profile-avatar{width:104px;height:104px;display:grid;place-items:center;overflow:hidden;border:4px solid #fff;border-radius:50%;background:#e8f2ff;color:#176b72;font-size:29px;font-weight:850;box-shadow:0 8px 25px #14264b1c}
+    .profile-nav{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:14px 18px;border:1px solid var(--p-line);border-radius:16px;background:var(--p-surface);box-shadow:0 12px 35px var(--p-shadow)}
+    .profile-brand{font-size:11px;font-weight:850;letter-spacing:1.5px;color:var(--p-red)}
+    .nav-actions{display:flex;align-items:center;gap:9px}
+    .back-link,.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 13px;border:1px solid var(--p-line);border-radius:10px;background:var(--p-surface);color:var(--p-text);font-size:11px;font-weight:750;text-decoration:none;cursor:pointer}
+    .back-link:hover,.theme-toggle:hover{border-color:var(--p-red);color:var(--p-red)}
+    .profile-hero{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:24px;margin-top:24px;padding:30px;border:1px solid var(--p-line);border-radius:22px;background:linear-gradient(115deg,var(--p-surface),var(--p-soft));box-shadow:0 18px 50px var(--p-shadow)}
+    .profile-hero:after{content:"";position:absolute;z-index:-1;width:180px;height:90px;right:5%;top:18%;opacity:.15;border:18px solid var(--p-red);border-radius:50%;box-shadow:46px 3px 0 -8px var(--p-red),-42px 5px 0 -8px var(--p-red)}
+    .profile-avatar{width:104px;height:104px;display:grid;place-items:center;overflow:hidden;border:4px solid var(--p-surface);border-radius:50%;background:color-mix(in srgb,var(--p-red) 12%,var(--p-surface));color:var(--p-red);font-size:29px;font-weight:850;box-shadow:0 8px 25px var(--p-shadow)}
     .profile-avatar img{width:100%;height:100%;object-fit:cover}
-    .eyebrow{margin:0 0 8px;color:#2764b0;font-size:10px;font-weight:850;letter-spacing:1.8px}
-    .profile-hero h1{margin:0;color:#152a46;font-size:32px;line-height:1.2}
-    .profile-headline{margin:8px 0 0;color:#64758b;font-size:14px}
-    .profile-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}
-    .profile-links:empty{display:none}
-    .profile-links a{padding:9px 13px;border:1px solid #c9d9ef;border-radius:10px;background:#eef5ff;color:#24589a;font-size:11px;font-weight:750;text-decoration:none}
-    .profile-links a:hover{background:#e1edff}
+    .eyebrow{margin:0 0 8px;color:var(--p-red);font-size:10px;font-weight:850;letter-spacing:1.8px}
+    .profile-hero h1{margin:0;color:var(--p-text);font-size:32px;line-height:1.2}
+    .profile-headline{margin:8px 0 0;color:var(--p-muted);font-size:14px}
+    .profile-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}.profile-links:empty{display:none}
+    .profile-links a{padding:9px 13px;border:1px solid var(--p-line);border-radius:10px;background:var(--p-soft);color:var(--p-red);font-size:11px;font-weight:750;text-decoration:none}
     .profile-content{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
-    .profile-panel{padding:23px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 10px 30px #14264b0b}
+    .profile-panel{padding:23px;border:1px solid var(--p-line);border-radius:18px;background:var(--p-surface);box-shadow:0 10px 30px var(--p-shadow)}
     .panel-heading{display:flex;align-items:center;gap:11px;margin-bottom:18px}
-    .panel-mark{width:37px;height:37px;display:grid;place-items:center;border-radius:11px;background:#eaf2ff;color:#2861aa;font-size:11px;font-weight:900}
-    .panel-heading h2{margin:0;color:#192e49;font-size:16px}
-    .panel-heading p{margin:4px 0 0;color:#718198;font-size:10px}
+    .panel-mark{width:37px;height:37px;display:grid;place-items:center;border-radius:11px;background:color-mix(in srgb,var(--p-red) 12%,var(--p-surface));color:var(--p-red);font-size:11px;font-weight:900}
+    .panel-heading h2{margin:0;color:var(--p-text);font-size:16px}.panel-heading p{margin:4px 0 0;color:var(--p-muted);font-size:10px}
     .details{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .profile-detail{min-width:0;padding:12px;border:1px solid #e7edf5;border-radius:12px;background:#f8faff}
-    .profile-detail dt{color:#718198;font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
-    .profile-detail dd{margin:6px 0 0;color:#1c3049;font-size:12px;font-weight:700;overflow-wrap:anywhere}
-    .professional-copy{margin:0 0 18px;color:#687a90;font-size:12px;line-height:1.7}
-    .resume-card{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid #dce6f2;border-radius:14px;background:linear-gradient(110deg,#f4f8ff,#f8fbff)}
-    .resume-icon{width:43px;height:48px;display:grid;place-items:center;border-radius:10px;background:#e5edff;color:#315da6;font-size:10px;font-weight:900}
-    .resume-title{color:#1e3552;font-size:12px;font-weight:800}
-    .resume-status{margin:4px 0 0;color:#77869b;font-size:10px;line-height:1.5}
-    @media(max-width:680px){.profile-page{padding:15px 14px 40px}.profile-nav{padding:11px 12px}.profile-hero{grid-template-columns:68px minmax(0,1fr);gap:16px;margin-top:15px;padding:20px 16px}.profile-avatar{width:66px;height:66px;font-size:21px}.profile-hero h1{font-size:24px}.profile-headline{font-size:12px}.profile-content{grid-template-columns:1fr;gap:13px;margin-top:13px}.profile-panel{padding:18px}.details{gap:8px}}
+    .profile-detail{min-width:0;padding:12px;border:1px solid var(--p-line);border-radius:12px;background:var(--p-soft)}
+    .profile-detail dt{color:var(--p-muted);font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+    .profile-detail dd{margin:6px 0 0;color:var(--p-text);font-size:12px;font-weight:700;overflow-wrap:anywhere}
+    .resume-card,.career-item{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--p-line);border-radius:14px;background:linear-gradient(110deg,var(--p-soft),var(--p-surface))}
+    .resume-icon,.career-icon{width:43px;height:48px;flex:0 0 auto;display:grid;place-items:center;border-radius:10px;background:color-mix(in srgb,var(--p-red) 12%,var(--p-surface));color:var(--p-red);font-size:10px;font-weight:900}
+    .resume-title,.career-title{color:var(--p-text);font-size:12px;font-weight:800}
+    .resume-status,.career-link{margin:4px 0 0;color:var(--p-muted);font-size:10px;line-height:1.5;overflow-wrap:anywhere}
+    .career-items{display:grid;gap:10px;margin-top:10px}.career-copy{min-width:0;flex:1}
+    .career-link{display:inline-block;color:var(--p-red);text-decoration:none}
+    .career-delete{border:0;background:transparent;color:var(--p-muted);font-size:18px;cursor:pointer}.career-delete:hover{color:var(--p-red)}
+    .add-detail{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:15px;padding:12px;border:1px dashed var(--p-red);border-radius:12px;background:color-mix(in srgb,var(--p-red) 7%,var(--p-surface));color:var(--p-red);font-size:12px;font-weight:800;cursor:pointer}
+    .add-detail span{font-size:20px;line-height:1}.add-detail:hover{background:color-mix(in srgb,var(--p-red) 14%,var(--p-surface))}
+    @media(max-width:680px){.profile-page{padding:15px 14px 40px}.profile-nav{padding:11px 12px}.profile-brand{font-size:9px}.nav-actions{gap:6px}.back-link,.theme-toggle{padding:9px;font-size:10px}.profile-hero{grid-template-columns:68px minmax(0,1fr);gap:16px;margin-top:15px;padding:20px 16px}.profile-avatar{width:66px;height:66px;font-size:21px}.profile-hero h1{font-size:24px}.profile-headline{font-size:12px}.profile-content{grid-template-columns:1fr;gap:13px;margin-top:13px}.profile-panel{padding:18px}.details{gap:8px}}
   </style>
 </head>
 <body>
   <div class="top"></div>
   <main class="profile-page">
     <nav class="profile-nav" aria-label="Profile navigation">
-      <span class="profile-brand">DIGITAL LABORATORY</span>
-      <a class="back-link" href="index.html">← Back to Home</a>
+      <span class="profile-brand">DIGITAL LABORATORY · 暁 AKATSUKI</span>
+      <div class="nav-actions"><button class="theme-toggle" id="themeToggle" type="button">☾ Dark mode</button><a class="back-link" href="index.html">← Back to Home</a></div>
     </nav>
     <section class="profile-hero" aria-labelledby="profileName">
       <div class="profile-avatar" id="profileAvatar" aria-hidden="true">DS</div>
       <div>
-        <p class="eyebrow">STUDENT &amp; PROFESSIONAL PROFILE</p>
+        <p class="eyebrow">STUDENT PROFILE</p>
         <h1 id="profileName">Dhanush SV</h1>
         <p class="profile-headline" id="profileHeadline">Data Science Student · Mohan Babu University</p>
         <div class="profile-links" id="profileLinks" aria-label="Social profile links"></div>
@@ -62,10 +67,11 @@
         <div class="panel-heading"><span class="panel-mark" aria-hidden="true">ID</span><div><h2 id="idTitle">Student ID Card</h2><p>Academic identity details</p></div></div>
         <dl class="details" id="identityDetails"></dl>
       </section>
-      <section class="profile-panel" aria-labelledby="professionalTitle">
-        <div class="panel-heading"><span class="panel-mark" aria-hidden="true">✦</span><div><h2 id="professionalTitle">Professional Details</h2><p>Profile and career materials</p></div></div>
-        <p class="professional-copy" id="professionalSummary"></p>
+      <section class="profile-panel" aria-labelledby="careerTitle">
+        <div class="panel-heading"><span class="panel-mark" aria-hidden="true">✦</span><div><h2 id="careerTitle">Career Materials</h2><p>Resume and profile links</p></div></div>
         <div class="resume-card"><span class="resume-icon" aria-hidden="true">PDF</span><div><div class="resume-title">Resume</div><p class="resume-status">Resume details will be added here.</p></div></div>
+        <div class="career-items" id="careerItems"></div>
+        <button class="add-detail" id="addProfessionalDetail" type="button"><span aria-hidden="true">＋</span> Add a link or detail</button>
       </section>
     </div>
   </main>
@@ -77,7 +83,7 @@
       const text = (id, value) => { document.getElementById(id).textContent = value || "—"; };
       text("profileName", student.name);
       text("profileHeadline", `${student.designation || "Data Science Student"} · ${student.branch || "Mohan Babu University"}`);
-      text("professionalSummary", `${student.name || "Student"} · ${student.branch || "Data Science"} · Mohan Babu University`);
+
       const avatar = document.getElementById("profileAvatar");
       if (student.photo && /^data:image\//i.test(student.photo)) { const image = document.createElement("img"); image.src = student.photo; image.alt = ""; avatar.replaceChildren(image); }
       else avatar.textContent = (student.name || "Student").trim().split(/\s+/).slice(0,2).map(part => part[0] || "").join("").toUpperCase();
@@ -87,6 +93,18 @@
       const candidates=[["GitHub",student.github],["LinkedIn",student.linkedin],[student.socialName || "Social profile",student.socialUrl]];
       const links=document.getElementById("profileLinks");
       for (const [label,raw] of candidates) { try { const url=new URL(raw); if(url.protocol!=="https:")continue; const a=document.createElement("a");a.href=url.href;a.target="_blank";a.rel="noopener noreferrer";a.textContent=`${label} ↗`;links.append(a); } catch (_) {} }
+
+      const themeKey="digitalLabmanualProfileTheme", themeButton=document.getElementById("themeToggle");
+      const setTheme=theme=>{document.body.dataset.theme=theme;try{localStorage.setItem(themeKey,theme);}catch(_){}themeButton.textContent=theme==="dark"?"☀ Light mode":"☾ Dark mode";document.querySelector('meta[name="theme-color"]').content=theme==="dark"?"#101217":"#f5f2ee";};
+      let savedTheme="light";try{savedTheme=localStorage.getItem(themeKey)||"light";}catch(_){}setTheme(savedTheme==="dark"?"dark":"light");
+      themeButton.addEventListener("click",()=>setTheme(document.body.dataset.theme==="dark"?"light":"dark"));
+
+      const careerKey="digitalLabmanualCareerItems", careerItems=document.getElementById("careerItems");
+      let savedItems=[];try{savedItems=JSON.parse(localStorage.getItem(careerKey)||"[]");if(!Array.isArray(savedItems))savedItems=[];}catch(_){}
+      const persistItems=()=>{try{localStorage.setItem(careerKey,JSON.stringify(savedItems));}catch(_){alert("Browser storage is full. Remove an item and try again.");}};
+      const renderItems=()=>{careerItems.replaceChildren();savedItems.forEach((item,index)=>{const row=document.createElement("div");row.className="career-item";const icon=document.createElement("span");icon.className="career-icon";icon.textContent="↗";const copy=document.createElement("div");copy.className="career-copy";const title=document.createElement("div");title.className="career-title";title.textContent=item.title;const link=document.createElement("a");link.className="career-link";link.href=item.url;link.target="_blank";link.rel="noopener noreferrer";link.textContent=item.url;copy.append(title,link);const remove=document.createElement("button");remove.className="career-delete";remove.type="button";remove.setAttribute("aria-label",`Remove ${item.title}`);remove.textContent="×";remove.addEventListener("click",()=>{savedItems.splice(index,1);persistItems();renderItems();});row.append(icon,copy,remove);careerItems.append(row);});};
+      renderItems();
+      document.getElementById("addProfessionalDetail").addEventListener("click",()=>{const title=prompt("Detail name (for example: GitHub, LinkedIn, Portfolio, or Resume)");if(!title||!title.trim())return;const raw=prompt("Paste a public https:// link");if(!raw)return;try{const url=new URL(raw.trim());if(url.protocol!=="https:")throw new Error();savedItems.push({title:title.trim(),url:url.href});persistItems();renderItems();}catch(_){alert("Please enter a valid https:// link.");}});
     })();
   </script>
 </body>
