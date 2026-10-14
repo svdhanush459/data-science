@@ -392,26 +392,9 @@ else:
     detail.hidden = false;
     detail.innerHTML = `<button class="module-back" type="button" id="moduleBack">← All modules</button><div class="module-emblem" aria-hidden="true">${String(activeModuleId).padStart(2, "0")}</div><div class="module-material-content"><div class="module-eyebrow">COURSE MATERIALS</div><h3>Module ${activeModuleId}</h3><p class="module-description">${escapeHtml(module.description)}</p><small id="moduleUploadStatus">Course handouts are managed by the site developer.</small><div class="module-pdf-list" id="modulePdfList"></div></div>`;
     $("moduleBack").onclick = () => { detail.hidden = true; $("moduleGrid").hidden = false; };
-    $("addModulePdf").onclick = () => $("modulePdfUpload").click();
     const uploadId = `module-${activeModuleId}`;
     const saved = await readUploads(uploadId).catch(() => ({ modulePdfs: [] }));
     if (activeModuleId === Number(moduleId)) renderModulePdfs(saved.modulePdfs || []);
-    $("modulePdfUpload").onchange = async (event) => {
-      const chosen = [...event.target.files].filter((file) => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
-      if (!chosen.length) { $("moduleUploadStatus").textContent = "Please upload PDF files only."; return; }
-      const status = $("moduleUploadStatus");
-      status.textContent = "PDF save avuthondi…";
-      try {
-        const current = await readUploads(uploadId);
-        const modulePdfs = [...(current.modulePdfs || []), ...chosen.map((file) => ({ name: file.name, type: file.type || "application/pdf", size: file.size, blob: file }))];
-        await writeUploads({ ...current, id: uploadId, modulePdfs });
-        renderModulePdfs(modulePdfs);
-        status.textContent = `${chosen.length} PDF save ayyayi. Ee browser lo malli open cheyochu.`;
-        event.target.value = "";
-      } catch (error) {
-        status.textContent = error?.message || "Could not save the PDF. Try a smaller file.";
-      }
-    };
     detail.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   moduleSection.querySelectorAll("[data-open-module]").forEach((button) => button.addEventListener("click", () => openModule(button.dataset.openModule)));
@@ -625,8 +608,10 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
     $("save").textContent = id === null ? "Create Experiment" : "Save Changes";
     if (id !== null) fillEditor(labs.find((item) => item.id === id) || {});
   }
-  addButton.textContent = "＋ New Experiment";
-  addButton.onclick = () => openEditor();
+  if (addButton) {
+    addButton.textContent = "＋ New Experiment";
+    addButton.onclick = () => openEditor();
+  }
 
   window.renderCards = function (query = "") {
     const cards = $("cards");

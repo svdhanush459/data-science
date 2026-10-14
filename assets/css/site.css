@@ -5,3 +5,5 @@
 
 /* Public site is read-only; course edits are published from the developer repository. */
 #editNames,#add,#edit,#deleteCurrentExperiment,#saveLabIO,.profile-link-action,.module-add-pdf,#modulePdfUpload,.card .delete,.lab-actions{display:none!important}
+
+@keyframes profileCardReveal{0%{box-shadow:0 0 0 0 #4c91ff00}35%{box-shadow:0 0 0 5px #4c91ff99,0 12px 34px #4c91ff35}100%{box-shadow:0 0 0 0 #4c91ff00}}.profile-card-reveal{animation:profileCardReveal 1.5s ease-out}
