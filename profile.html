@@ -30,9 +30,9 @@
     .panel-heading h2{margin:0;color:#192e49;font-size:16px}
     .panel-heading p{margin:4px 0 0;color:#718198;font-size:10px}
     .details{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .detail{min-width:0;padding:12px;border:1px solid #e7edf5;border-radius:12px;background:#f8faff}
-    .detail dt{color:#718198;font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
-    .detail dd{margin:6px 0 0;color:#1c3049;font-size:12px;font-weight:700;overflow-wrap:anywhere}
+    .profile-detail{min-width:0;padding:12px;border:1px solid #e7edf5;border-radius:12px;background:#f8faff}
+    .profile-detail dt{color:#718198;font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+    .profile-detail dd{margin:6px 0 0;color:#1c3049;font-size:12px;font-weight:700;overflow-wrap:anywhere}
     .professional-copy{margin:0 0 18px;color:#687a90;font-size:12px;line-height:1.7}
     .resume-card{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid #dce6f2;border-radius:14px;background:linear-gradient(110deg,#f4f8ff,#f8fbff)}
     .resume-icon{width:43px;height:48px;display:grid;place-items:center;border-radius:10px;background:#e5edff;color:#315da6;font-size:10px;font-weight:900}
@@ -83,7 +83,7 @@
       else avatar.textContent = (student.name || "Student").trim().split(/\s+/).slice(0,2).map(part => part[0] || "").join("").toUpperCase();
       const rows = [["Student ID",student.id],["Section",student.section],["Branch",student.branch],["Subject",student.subject],["Faculty",student.faculty],["Designation",student.designation]];
       const details = document.getElementById("identityDetails");
-      for (const [label,value] of rows) { const box=document.createElement("div"); box.className="detail"; const dt=document.createElement("dt"); dt.textContent=label; const dd=document.createElement("dd"); dd.textContent=value || "—"; box.append(dt,dd); details.append(box); }
+      for (const [label,value] of rows) { const box=document.createElement("div"); box.className="profile-detail"; const dt=document.createElement("dt"); dt.textContent=label; const dd=document.createElement("dd"); dd.textContent=value || "—"; box.append(dt,dd); details.append(box); }
       const candidates=[["GitHub",student.github],["LinkedIn",student.linkedin],[student.socialName || "Social profile",student.socialUrl]];
       const links=document.getElementById("profileLinks");
       for (const [label,raw] of candidates) { try { const url=new URL(raw); if(url.protocol!=="https:")continue; const a=document.createElement("a");a.href=url.href;a.target="_blank";a.rel="noopener noreferrer";a.textContent=`${label} ↗`;links.append(a); } catch (_) {} }
