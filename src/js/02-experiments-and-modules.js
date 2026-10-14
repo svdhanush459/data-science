@@ -609,7 +609,7 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
     if (id !== null) fillEditor(labs.find((item) => item.id === id) || {});
   }
   if (addButton) {
-    addButton.textContent = "＋ New Experiment";
+    addButton.textContent = "＋ Add Experiment";
     addButton.onclick = () => openEditor();
   }
 
