@@ -16,4 +16,4 @@
 
 /* Keep the experiment creation control visible across cached and responsive layouts. */
 #add{display:inline-flex!important;align-items:center;justify-content:center;visibility:visible!important;opacity:1!important;position:relative;z-index:1}
-@media(max-width:680px){.sectionhead>div:last-child{width:auto!important;flex:0 0 auto}.sectionhead .add{white-space:nowrap}}
+@media(max-width:680px){.sectionhead{flex-direction:row!important;align-items:center!important;justify-content:space-between}.sectionhead>div:first-child{min-width:0;flex:1}.sectionhead>div:last-child{width:auto!important;flex:0 0 auto}.sectionhead .add{white-space:nowrap}}
