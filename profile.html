@@ -29,9 +29,11 @@
     .profile-headline{margin:8px 0 0;color:var(--p-muted);font-size:14px}
     .profile-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}.profile-links:empty{display:none}
     .profile-links a{padding:9px 13px;border:1px solid var(--p-line);border-radius:10px;background:var(--p-soft);color:var(--p-red);font-size:11px;font-weight:750;text-decoration:none}
+    .profile-links a{width:40px;height:40px;padding:0;display:grid;place-items:center}.profile-links svg{width:20px;height:20px;fill:currentColor}.profile-links .social-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .profile-content{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
     .profile-panel{padding:23px;border:1px solid var(--p-line);border-radius:18px;background:var(--p-surface);box-shadow:0 10px 30px var(--p-shadow)}
     .panel-heading{display:flex;align-items:center;gap:11px;margin-bottom:18px}
+    .panel-heading .edit-profile{margin-left:auto;padding:9px 12px;border:1px solid var(--p-line);border-radius:10px;background:var(--p-soft);color:var(--p-red);font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap}.panel-heading .edit-profile:hover{background:color-mix(in srgb,var(--p-red) 10%,var(--p-surface))}
     .panel-mark{width:37px;height:37px;display:grid;place-items:center;border-radius:11px;background:color-mix(in srgb,var(--p-red) 12%,var(--p-surface));color:var(--p-red);font-size:11px;font-weight:900}
     .panel-heading h2{margin:0;color:var(--p-text);font-size:16px}.panel-heading p{margin:4px 0 0;color:var(--p-muted);font-size:10px}
     .details{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -47,9 +49,10 @@
     .career-delete{border:0;background:transparent;color:var(--p-muted);font-size:18px;cursor:pointer}.career-delete:hover{color:var(--p-red)}
     .add-detail{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:15px;padding:12px;border:1px dashed var(--p-red);border-radius:12px;background:color-mix(in srgb,var(--p-red) 7%,var(--p-surface));color:var(--p-red);font-size:12px;font-weight:800;cursor:pointer}
     .add-detail span{font-size:20px;line-height:1}.add-detail:hover{background:color-mix(in srgb,var(--p-red) 14%,var(--p-surface))}
+    .profile-edit-overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:#091322b8;backdrop-filter:blur(6px)}.profile-edit-overlay[hidden]{display:none}.profile-edit-dialog{width:min(640px,100%);max-height:90vh;overflow:auto;padding:24px;border:1px solid var(--p-line);border-radius:18px;background:var(--p-surface);color:var(--p-text);box-shadow:0 25px 80px #0005}.profile-edit-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}.profile-edit-top h2{margin:0;font-size:20px}.profile-edit-top p{margin:5px 0 0;color:var(--p-muted);font-size:11px}.profile-edit-close{width:34px;height:34px;border:1px solid var(--p-line);border-radius:9px;background:var(--p-soft);color:var(--p-text);font-size:20px;cursor:pointer}.profile-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.profile-edit-field{display:grid;gap:5px}.profile-edit-field.full{grid-column:1/-1}.profile-edit-field label{color:var(--p-muted);font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}.profile-edit-field input{width:100%;box-sizing:border-box;padding:10px 11px;border:1px solid var(--p-line);border-radius:9px;background:var(--p-soft);color:var(--p-text);font:inherit;font-size:12px}.profile-edit-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.profile-edit-actions button{padding:10px 14px;border:1px solid var(--p-line);border-radius:9px;background:var(--p-soft);color:var(--p-text);font-size:11px;font-weight:800;cursor:pointer}.profile-edit-actions .save-profile{background:var(--p-red);border-color:var(--p-red);color:#fff}
     html[data-theme="dark"] .theme-toggle,html[data-theme="dark"] .back-link{background:#223249;border-color:#43536a;color:#e7edf7}
     html[data-theme="dark"] .panel-mark{background:#223b3e;color:#a9e4d9}
-    @media(max-width:680px){.profile-page{padding:15px 14px 40px}.profile-nav{padding:11px 12px}.profile-brand{font-size:9px}.nav-actions{gap:6px}.back-link,.theme-toggle{padding:9px;font-size:10px}.profile-hero{grid-template-columns:68px minmax(0,1fr);gap:16px;margin-top:15px;padding:20px 16px}.profile-avatar{width:66px;height:66px;font-size:21px}.profile-hero h1{font-size:24px}.profile-headline{font-size:12px}.profile-content{grid-template-columns:1fr;gap:13px;margin-top:13px}.profile-panel{padding:18px}.details{gap:8px}}
+    @media(max-width:680px){.profile-page{padding:15px 14px 40px}.profile-nav{padding:11px 12px}.profile-brand{font-size:9px}.nav-actions{gap:6px}.back-link,.theme-toggle{padding:9px;font-size:10px}.profile-hero{grid-template-columns:68px minmax(0,1fr);gap:16px;margin-top:15px;padding:20px 16px}.profile-avatar{width:66px;height:66px;font-size:21px}.profile-hero h1{font-size:24px}.profile-headline{font-size:12px}.profile-content{grid-template-columns:1fr;gap:13px;margin-top:13px}.profile-panel{padding:18px}.details{gap:8px}.profile-edit-dialog{padding:20px 16px}.profile-edit-grid{grid-template-columns:1fr}.profile-edit-field.full{grid-column:auto}}
   </style>
 </head>
 <body>
@@ -70,7 +73,7 @@
     </section>
     <div class="profile-content">
       <section class="profile-panel" aria-labelledby="idTitle">
-        <div class="panel-heading"><span class="panel-mark" aria-hidden="true">ID</span><div><h2 id="idTitle">Student ID Card</h2><p>Academic identity details</p></div></div>
+        <div class="panel-heading"><span class="panel-mark" aria-hidden="true">ID</span><div><h2 id="idTitle">Student ID Card</h2><p>Academic identity details</p></div><button class="edit-profile" id="editProfile" type="button">✎ Edit Profile</button></div>
         <dl class="details" id="identityDetails"></dl>
       </section>
       <section class="profile-panel" aria-labelledby="careerTitle">
@@ -81,6 +84,24 @@
       </section>
     </div>
   </main>
+  <div class="profile-edit-overlay" id="profileEditOverlay" hidden>
+    <section class="profile-edit-dialog" role="dialog" aria-modal="true" aria-labelledby="editProfileTitle">
+      <div class="profile-edit-top"><div><h2 id="editProfileTitle">Edit Student Profile</h2><p>Changes will update the Student ID Card and profile page.</p></div><button class="profile-edit-close" id="closeProfileEdit" type="button" aria-label="Close">×</button></div>
+      <form id="profileEditForm"><div class="profile-edit-grid">
+        <div class="profile-edit-field"><label for="editName">Name</label><input id="editName" required maxlength="80"></div>
+        <div class="profile-edit-field"><label for="editId">Student ID</label><input id="editId" maxlength="40"></div>
+        <div class="profile-edit-field"><label for="editSection">Section</label><input id="editSection" maxlength="60"></div>
+        <div class="profile-edit-field"><label for="editBranch">Branch</label><input id="editBranch" maxlength="80"></div>
+        <div class="profile-edit-field"><label for="editSubject">Subject</label><input id="editSubject" maxlength="40"></div>
+        <div class="profile-edit-field"><label for="editFaculty">Faculty</label><input id="editFaculty" maxlength="80"></div>
+        <div class="profile-edit-field full"><label for="editPhoto">Profile photo (optional)</label><input id="editPhoto" type="file" accept="image/png,image/jpeg,image/webp"></div>
+        <div class="profile-edit-field"><label for="editGithub">GitHub URL</label><input id="editGithub" type="url" placeholder="https://github.com/username"></div>
+        <div class="profile-edit-field"><label for="editLinkedin">LinkedIn URL</label><input id="editLinkedin" type="url" placeholder="https://linkedin.com/in/username"></div>
+        <div class="profile-edit-field"><label for="editSocialName">Other social site</label><input id="editSocialName" placeholder="Instagram, portfolio…" maxlength="40"></div>
+        <div class="profile-edit-field"><label for="editSocialUrl">Other social URL</label><input id="editSocialUrl" type="url" placeholder="https://…"></div>
+      </div><div class="profile-edit-actions"><button id="cancelProfileEdit" type="button">Cancel</button><button class="save-profile" type="submit">Save Profile</button></div></form>
+    </section>
+  </div>
   <script>
     (() => {
       const defaults = {name:"dhanush sv", id:"MBU000000", section:"CSE-DS A", branch:"CSE - Data Science", faculty:"Faculty Name", designation:"Student", subject:"DS-301", photo:"", github:"", linkedin:"", socialName:"", socialUrl:""};
@@ -111,6 +132,26 @@
       const renderItems=()=>{careerItems.replaceChildren();savedItems.forEach((item,index)=>{const row=document.createElement("div");row.className="career-item";const icon=document.createElement("span");icon.className="career-icon";icon.textContent="↗";const copy=document.createElement("div");copy.className="career-copy";const title=document.createElement("div");title.className="career-title";title.textContent=item.title;const link=document.createElement("a");link.className="career-link";link.href=item.url;link.target="_blank";link.rel="noopener noreferrer";link.textContent=item.url;copy.append(title,link);const remove=document.createElement("button");remove.className="career-delete";remove.type="button";remove.setAttribute("aria-label",`Remove ${item.title}`);remove.textContent="×";remove.addEventListener("click",()=>{savedItems.splice(index,1);persistItems();renderItems();});row.append(icon,copy,remove);careerItems.append(row);});};
       renderItems();
       document.getElementById("addProfessionalDetail").addEventListener("click",()=>{const title=prompt("Detail name (for example: GitHub, LinkedIn, Portfolio, or Resume)");if(!title||!title.trim())return;const raw=prompt("Paste a public https:// link");if(!raw)return;try{const url=new URL(raw.trim());if(url.protocol!=="https:")throw new Error();savedItems.push({title:title.trim(),url:url.href});persistItems();renderItems();}catch(_){alert("Please enter a valid https:// link.");}});
+    })();
+  </script>
+  <script>
+    (() => {
+      const key="digitalLabmanualStudent", $=id=>document.getElementById(id), overlay=$("profileEditOverlay"), form=$("profileEditForm");
+      let student={name:"dhanush sv",id:"MBU000000",section:"CSE-DS A",branch:"CSE - Data Science",faculty:"Faculty Name",designation:"Student",subject:"DS-301",photo:"",github:"",linkedin:"",socialName:"",socialUrl:""};
+      try{student={...student,...JSON.parse(localStorage.getItem(key)||"{}")}}catch(_){ }
+      const safeUrl=value=>{try{const url=new URL(String(value||"").trim());return ["http:","https:"].includes(url.protocol)?url.href:""}catch(_){return ""}};
+      const icon=host=>host.includes("github")?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.16c-3.2.7-3.88-1.36-3.88-1.36-.53-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.34.95.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.14-1.17 3.14-1.17.62 1.58.23 2.75.11 3.04.73.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.66.41.36.78 1.06.78 2.14v3.18c0 .31.21.67.8.56A11.52 11.52 0 0 0 12 .5z"/></svg>':host.includes("linkedin")?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.37 4.28 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>':host.includes("instagram")?'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="6" r="1.2"/></svg>':host.includes("youtube")?'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z" fill="var(--p-surface)"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+      function render(){
+        $("profileName").textContent=student.name||"Student";$("profileHeadline").textContent=`Student · ${student.branch||"CSE - Data Science"}`;
+        const avatar=$("profileAvatar");if(student.photo&&/^data:image\//i.test(student.photo)){const img=document.createElement("img");img.src=student.photo;img.alt="Student photo";avatar.replaceChildren(img)}else avatar.textContent=(student.name||"Student").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase();
+        const detail=$("identityDetails");detail.replaceChildren();for(const [label,value] of [["Student ID",student.id],["Section",student.section],["Branch",student.branch],["Subject",student.subject],["Faculty",student.faculty],["Role",student.designation||"Student"]]){const box=document.createElement("div"),dt=document.createElement("dt"),dd=document.createElement("dd");box.className="profile-detail";dt.textContent=label;dd.textContent=value||"—";box.append(dt,dd);detail.append(box)}
+        const links=$("profileLinks");links.replaceChildren();for(const [label,raw] of [["GitHub",student.github],["LinkedIn",student.linkedin],[student.socialName||"Social profile",student.socialUrl]]){const href=safeUrl(raw);if(!href)continue;const a=document.createElement("a"),host=new URL(href).hostname.toLowerCase();a.href=href;a.target="_blank";a.rel="noopener noreferrer";a.title=label;a.setAttribute("aria-label",`Open ${label} profile`);a.innerHTML=icon(host);links.append(a)}
+      }
+      function open(){for(const [id,k] of Object.entries({editName:"name",editId:"id",editSection:"section",editBranch:"branch",editSubject:"subject",editFaculty:"faculty",editGithub:"github",editLinkedin:"linkedin",editSocialName:"socialName",editSocialUrl:"socialUrl"}))$(id).value=student[k]||"";$("editPhoto").value="";overlay.hidden=false;$("editName").focus()}
+      function close(){overlay.hidden=true;form.reset()}
+      $("editProfile").addEventListener("click",open);$("closeProfileEdit").addEventListener("click",close);$("cancelProfileEdit").addEventListener("click",close);overlay.addEventListener("click",e=>{if(e.target===overlay)close()});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!overlay.hidden)close()});
+      form.addEventListener("submit",e=>{e.preventDefault();for(const [k,id] of Object.entries({name:"editName",id:"editId",section:"editSection",branch:"editBranch",subject:"editSubject",faculty:"editFaculty",github:"editGithub",linkedin:"editLinkedin",socialName:"editSocialName",socialUrl:"editSocialUrl"}))student[k]=$(id).value.trim();for(const [k,id] of [["github","editGithub"],["linkedin","editLinkedin"],["socialUrl","editSocialUrl"]]){if(student[k]&&!safeUrl(student[k])){$(id).focus();return}student[k]=safeUrl(student[k])}const file=$("editPhoto").files?.[0],save=photo=>{if(photo)student.photo=photo;try{localStorage.setItem(key,JSON.stringify(student));render();close()}catch(_){alert("Could not save. Try a smaller photo or clear browser storage.")}};if(file){if(file.size>2*1024*1024){alert("Please choose a photo under 2 MB.");return}const reader=new FileReader();reader.onload=()=>save(reader.result);reader.readAsDataURL(file)}else save("")});
+      render();
     })();
   </script>
 </body>
