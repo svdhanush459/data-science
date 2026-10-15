@@ -325,7 +325,7 @@ else:
   const nav = document.createElement("nav");
   nav.className = "lab-nav";
   nav.setAttribute("aria-label", "Main navigation");
-  nav.innerHTML = '<button type="button" data-nav="home" class="active">Home</button><button type="button" data-nav="experiments">Experiments</button><button type="button" data-nav="modules">Module</button><button type="button" data-nav="compiler">Compiler</button>';
+  nav.innerHTML = '<button type="button" data-nav="home" class="active">Home</button><button type="button" data-nav="experiments">Experiments</button><button type="button" data-nav="modules">Module</button><button type="button" data-nav="tools">Tools</button><button type="button" data-nav="compiler">Compiler</button>';
   document.querySelector(".head").after(nav);
   const searchRow = document.querySelector(".searchrow");
   const dataScienceIntro = document.querySelector(".intro");
@@ -367,10 +367,27 @@ else:
   moduleSection.hidden = true;
   moduleSection.innerHTML = `<div class="module-intro"><h2>DATA SCIENCE MODULES</h2><p>Choose a module to view its course materials.</p></div><div class="module-grid" id="moduleGrid">${moduleItems.map((module, index) => `<button class="module-card" type="button" data-open-module="${index + 1}"><span class="module-number">MODULE ${String(index + 1).padStart(2, "0")}</span><strong>${escapeHtml(module.title)}</strong><span>${escapeHtml(module.description)}</span></button>`).join("")}</div><section class="module-detail" id="moduleDetail" hidden></section>`;
   document.querySelector("#dashboard").after(moduleSection);
+  const toolItems = [
+    { name: "Python", icon: "Py", category: "PROGRAMMING", description: "The core language for data analysis, automation, and machine learning.", url: "https://www.python.org/about/gettingstarted/" },
+    { name: "NumPy", icon: "N", category: "NUMERICAL COMPUTING", description: "Fast arrays, mathematical operations, and scientific computing basics.", url: "https://numpy.org/doc/stable/user/quickstart.html" },
+    { name: "Pandas", icon: "Pd", category: "DATA ANALYSIS", description: "Load, clean, explore, and transform tabular datasets with DataFrames.", url: "https://pandas.pydata.org/docs/getting_started/intro_tutorials/" },
+    { name: "Matplotlib", icon: "M", category: "VISUALIZATION", description: "Build charts and plots to communicate patterns in your data.", url: "https://matplotlib.org/stable/tutorials/" },
+    { name: "Seaborn", icon: "S", category: "STATISTICAL VISUALIZATION", description: "Create clear statistical graphics using a high-level plotting interface.", url: "https://seaborn.pydata.org/tutorial.html" },
+    { name: "Scikit-learn", icon: "sk", category: "MACHINE LEARNING", description: "Train and evaluate models for classification, regression, and clustering.", url: "https://scikit-learn.org/stable/getting_started.html" },
+    { name: "Jupyter", icon: "J", category: "NOTEBOOKS", description: "Combine executable code, results, and explanations in interactive notebooks.", url: "https://docs.jupyter.org/en/latest/start/index.html" },
+    { name: "SciPy", icon: "Σ", category: "SCIENTIFIC COMPUTING", description: "Use scientific algorithms for statistics, optimization, and signal processing.", url: "https://docs.scipy.org/doc/scipy/tutorial/" },
+  ];
+  const toolsSection = document.createElement("section");
+  toolsSection.className = "tools-view";
+  toolsSection.id = "toolsView";
+  toolsSection.hidden = true;
+  toolsSection.innerHTML = `<div class="tools-hero"><span class="tools-eyebrow">DATA SCIENCE TOOLKIT</span><h2>Tools for every step</h2><p>Explore the languages and libraries used to prepare data, find patterns, and build clear visualizations.</p></div><div class="tools-grid">${toolItems.map((tool) => `<article class="tool-card"><div class="tool-card-top"><span class="tool-icon" aria-hidden="true">${escapeHtml(tool.icon)}</span><span class="tool-category">${escapeHtml(tool.category)}</span></div><h3>${escapeHtml(tool.name)}</h3><p>${escapeHtml(tool.description)}</p><a href="${tool.url}" target="_blank" rel="noopener noreferrer">Official guide <span aria-hidden="true">↗</span></a></article>`).join("")}</div>`;
+  moduleSection.after(toolsSection);
   let activeModuleId = 0;
   let modulePdfUrls = [];
   function showDashboard() {
     moduleSection.hidden = true;
+    toolsSection.hidden = true;
     $("dashboard").classList.remove("hide");
   }
   function renderModulePdfs(pdfFiles) {
@@ -414,8 +431,15 @@ else:
       if ($("detail").classList.contains("show")) $("back").click();
       $("dashboard").classList.add("hide");
       moduleSection.hidden = false;
+      toolsSection.hidden = true;
       $("moduleDetail").hidden = true;
       $("moduleGrid").hidden = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (name === "tools") {
+      if ($("detail").classList.contains("show")) $("back").click();
+      $("dashboard").classList.add("hide");
+      moduleSection.hidden = true;
+      toolsSection.hidden = false;
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       showDashboard();
