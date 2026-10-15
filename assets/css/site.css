@@ -18,4 +18,17 @@
 #add{display:inline-flex!important;align-items:center;justify-content:center;visibility:visible!important;opacity:1!important;position:relative;z-index:1}
 @media(max-width:680px){.sectionhead{flex-direction:row!important;align-items:center!important;justify-content:space-between}.sectionhead>div:first-child{min-width:0;flex:1}.sectionhead>div:last-child{width:auto!important;flex:0 0 auto}.sectionhead .add{white-space:nowrap}}
 
+/* Slow Akatsuki-inspired live wallpaper, kept behind every interface panel. */
+.akatsuki-live-wallpaper{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 72% 30%,#f2dadd 0,transparent 46%),linear-gradient(145deg,#eef3f7,#f7f5f4 54%,#e8eff5)}
+.akatsuki-live-wallpaper:before,.akatsuki-live-wallpaper:after{content:"";position:absolute;inset:-5%;pointer-events:none}
+.akatsuki-live-wallpaper:before{background:url("../akatsuki-live-wallpaper.svg") center 58%/cover no-repeat;opacity:.18;mix-blend-mode:multiply;transform:scale(1.02);animation:akatsukiPan 54s ease-in-out infinite alternate}
+.akatsuki-live-wallpaper:after{background:radial-gradient(ellipse at 12% 72%,#c6223826 0,transparent 31%),radial-gradient(ellipse at 86% 28%,#d43b4926 0,transparent 32%),radial-gradient(ellipse at 48% 92%,#27435a16 0,transparent 34%);filter:blur(28px);animation:akatsukiMist 18s ease-in-out infinite alternate}
+body>.top,body>.wrap,body>.profile-page{position:relative;z-index:1}
+html[data-theme="dark"] .akatsuki-live-wallpaper{background:radial-gradient(ellipse at 75% 23%,#7020305c 0,transparent 39%),linear-gradient(145deg,#0a1019,#111923 56%,#171216)}
+html[data-theme="dark"] .akatsuki-live-wallpaper:before{opacity:.42;mix-blend-mode:screen}
+html[data-theme="dark"] .akatsuki-live-wallpaper:after{background:radial-gradient(ellipse at 12% 72%,#d52b4435 0,transparent 30%),radial-gradient(ellipse at 86% 28%,#a9233740 0,transparent 32%),radial-gradient(ellipse at 48% 92%,#193f5840 0,transparent 34%)}
+@keyframes akatsukiPan{0%{background-position:46% 55%;transform:scale(1.02)}100%{background-position:54% 46%;transform:scale(1.08)}}
+@keyframes akatsukiMist{0%{transform:translate3d(-1.5%,1%,0) scale(.98);opacity:.65}100%{transform:translate3d(1.5%,-1%,0) scale(1.04);opacity:1}}
+@media(prefers-reduced-motion:reduce){.akatsuki-live-wallpaper:before,.akatsuki-live-wallpaper:after{animation:none}}
+
 @media(max-width:680px){.sectionhead{flex-direction:row!important;align-items:center!important;justify-content:space-between}.sectionhead>div:first-child{min-width:0;flex:1}.sectionhead>div:last-child{width:auto!important;flex:0 0 auto}.sectionhead .add{white-space:nowrap}}
