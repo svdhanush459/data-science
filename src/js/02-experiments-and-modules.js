@@ -322,11 +322,11 @@ else:
   }
   const navButtons = [...nav.querySelectorAll("button")];
   const moduleItems = [
-    { title: "Data Science Foundations", description: "Core concepts, workflow, and responsible use of data." },
-    { title: "Python and Data Handling", description: "Python basics, Pandas DataFrames, and reading datasets." },
-    { title: "Data Cleaning and Exploration", description: "Data quality, cleaning methods, and exploratory analysis." },
-    { title: "Visualization and Regression", description: "Data visualization, relationships, and linear regression." },
-    { title: "Classification and Decision Trees", description: "Classification workflow, decision trees, and evaluation." },
+    { title: "Data Science Foundations", description: "Core concepts, workflow, and responsible use of data.", pdf: { name: "DS1.pdf", url: "modules/module-01/DS1.pdf" } },
+    { title: "Python and Data Handling", description: "Python basics, Pandas DataFrames, and reading datasets.", pdf: { name: "DS2.pdf", url: "modules/module-02/DS2.pdf" } },
+    { title: "Data Cleaning and Exploration", description: "Data quality, cleaning methods, and exploratory analysis.", pdf: { name: "DS3.pdf", url: "modules/module-03/DS3.pdf" } },
+    { title: "Visualization and Regression", description: "Data visualization, relationships, and linear regression.", pdf: { name: "DS4.pdf", url: "modules/module-04/DS4.pdf" } },
+    { title: "Classification and Decision Trees", description: "Classification workflow, decision trees, and evaluation.", pdf: { name: "DS5.pdf", url: "modules/module-05/DS5.pdf" } },
   ];
   const moduleSection = document.createElement("section");
   moduleSection.className = "module-view";
@@ -357,16 +357,17 @@ else:
     toolsSection.hidden = true;
     $("dashboard").classList.remove("hide");
   }
-  function renderModulePdfs(pdfFiles) {
+  function renderModulePdfs(pdfFiles, publishedPdf) {
     modulePdfUrls.forEach((url) => URL.revokeObjectURL(url));
     modulePdfUrls = [];
     const list = $("modulePdfList");
-    if (!pdfFiles?.length) { list.innerHTML = '<p class="module-empty">No published PDF handout is available yet.</p>'; return; }
-    list.innerHTML = pdfFiles.map((file, index) => {
+    const published = publishedPdf ? `<div class="module-pdf"><span>${escapeHtml(publishedPdf.name)}</span><div class="module-pdf-actions"><a href="${publishedPdf.url}" target="_blank" rel="noopener">Open PDF ↗</a><a href="${publishedPdf.url}" download="${escapeHtml(publishedPdf.name)}">↓ Download</a></div></div>` : "";
+    const uploaded = (pdfFiles || []).map((file) => {
       const url = URL.createObjectURL(file.blob);
       modulePdfUrls.push(url);
       return `<div class="module-pdf"><span>${escapeHtml(file.name)} · ${(file.size / 1024).toFixed(1)} KB</span><div class="module-pdf-actions"><a href="${url}" target="_blank" rel="noopener">Open PDF ↗</a><a href="${url}" download="${escapeHtml(file.name)}">↓ Download</a></div></div>`;
     }).join("");
+    list.innerHTML = published + uploaded || '<p class="module-empty">No published PDF handout is available yet.</p>';
   }
   async function openModule(moduleId) {
     activeModuleId = Number(moduleId);
@@ -378,7 +379,7 @@ else:
     $("moduleBack").onclick = () => { detail.hidden = true; $("moduleGrid").hidden = false; };
     const uploadId = `module-${activeModuleId}`;
     const saved = await readUploads(uploadId).catch(() => ({ modulePdfs: [] }));
-    if (activeModuleId === Number(moduleId)) renderModulePdfs(saved.modulePdfs || []);
+    if (activeModuleId === Number(moduleId)) renderModulePdfs(saved.modulePdfs || [], module.pdf);
     detail.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   moduleSection.querySelectorAll("[data-open-module]").forEach((button) => button.addEventListener("click", () => openModule(button.dataset.openModule)));

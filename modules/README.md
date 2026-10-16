@@ -1,3 +1,3 @@
 # Course modules
 
-Each folder documents one module displayed in the website. PDF handouts uploaded through the site are stored in that browser on that device, so private/local uploads are not committed here.
+Each folder contains the published PDF handout displayed in that module. PDFs added locally through the site remain stored only in that browser on that device.
