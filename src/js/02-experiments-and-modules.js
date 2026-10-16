@@ -362,7 +362,7 @@ else:
     modulePdfUrls = [];
     const list = $("modulePdfList");
     const published = publishedPdf ? `<div class="module-pdf"><span>${escapeHtml(publishedPdf.name)}</span><div class="module-pdf-actions"><a href="${publishedPdf.url}" target="_blank" rel="noopener">Open PDF ↗</a><a href="${publishedPdf.url}" download="${escapeHtml(publishedPdf.name)}">↓ Download</a></div></div>` : "";
-    const uploaded = (pdfFiles || []).map((file) => {
+    const uploaded = (pdfFiles || []).filter((file) => file.name !== publishedPdf?.name).map((file) => {
       const url = URL.createObjectURL(file.blob);
       modulePdfUrls.push(url);
       return `<div class="module-pdf"><span>${escapeHtml(file.name)} · ${(file.size / 1024).toFixed(1)} KB</span><div class="module-pdf-actions"><a href="${url}" target="_blank" rel="noopener">Open PDF ↗</a><a href="${url}" download="${escapeHtml(file.name)}">↓ Download</a></div></div>`;
