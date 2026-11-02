@@ -7,7 +7,8 @@
       if (!Number.isInteger(experimentId) || experimentId < 1 || card.querySelector(".card-subparts")) return;
       const description = card.querySelector("p");
       if (!description) return;
-      const keys = experimentId === 1 ? ["1a", "1b", "1c"] : experimentId === 2 ? ["2a", "2b"] : experimentId === 3 ? ["3a", "3b", "3c", "3d"] : experimentId === 4 ? ["4a", "4b", "4c"] : experimentId === 5 ? ["5a", "5b", "5c", "5d"] : [`${experimentId}a`, `${experimentId}b`];
+      const keys = experimentId === 1 ? ["1a", "1b", "1c"] : experimentId === 2 ? ["2a", "2b"] : experimentId === 3 ? ["3a", "3b", "3c", "3d"] : experimentId === 4 ? ["4a", "4b", "4c"] : experimentId === 5 ? ["5a", "5b", "5c", "5d"] : experimentId === 6 ? ["6a", "6b", "6c", "6d", "6e", "6f", "6g"] : experimentId === 7 ? ["7a", "7b", "7c"] : experimentId === 8 ? ["8a", "8b"] : [];
+      if (!keys.length) return;
       const links = document.createElement("div");
       links.className = "card-subparts";
       links.setAttribute("aria-label", `Experiment ${experimentId} parts`);
