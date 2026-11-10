@@ -530,7 +530,7 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
     <div class="inputfield"><label for="eParts">Experiment parts (one per line)</label><textarea id="eParts" placeholder="Part 1: Data collection&#10;Part 2: Analysis&#10;Part 3: Results"></textarea></div>
     <div class="formgrid">
       <div class="inputfield"><label for="eVideoFile">Upload video</label><input id="eVideoFile" type="file" accept="video/*"><small class="upload-note" id="videoFileNote">Optional. This video will be saved with this experiment.</small></div>
-      <div class="inputfield"><label for="eDatasetFiles">Upload dataset files</label><input id="eDatasetFiles" type="file" multiple accept=".csv,.tsv,.txt,.json,.xlsx,.xls,.parquet"><small class="upload-note" id="datasetFileNote">Optional. You can select multiple files.</small></div>
+      <div class="inputfield"><label for="eDatasetFiles">Upload dataset files</label><input id="eDatasetFiles" type="file" multiple accept=".csv,.tsv,.txt,.json,.html,.htm,.xlsx,.xls,.parquet"><small class="upload-note" id="datasetFileNote">Optional. You can select multiple files.</small></div>
     </div>
     <div class="inputfield"><label for="eCode">Experiment code</label><textarea id="eCode" rows="7" placeholder="Write or paste the experiment code here"></textarea></div>
     <div class="inputfield"><label for="eInput">Code input / dataset notes</label><textarea id="eInput" rows="3" placeholder="Describe the inputs or expected dataset columns"></textarea></div>
@@ -759,21 +759,25 @@ print(loaded_data)`,
     "1c": `# Notebook source: exp1.ipynb
 # Experiment 1(c): Write and read student data in JSON and Excel formats
 import pandas as pd
-import openpyxl
 
 student_data = pd.DataFrame({
     "Roll_no": [10, 11, 12, 13],
     "name": ["Ganesh", "mani", "nithin", "Chandhu"],
     "Dept": ["CSE", "IT", "ECE", "CSE"],
 })
-student_data.to_json("Students.json", orient="records", indent=4)
+student_data.to_json("Students.json", orient="records")
 print("JSON file created")
 print("Student data from JSON:")
 print(pd.read_json("Students.json"))
-student_data.to_excel("Student.xlsx", sheet_name="Student details", index=False)
-print("Data written successfully in Excel")
-print("Data from Excel file:")
-print(pd.read_excel("Student.xlsx", sheet_name="Student details"))`,
+try:
+    student_data.to_excel("Student.xlsx", sheet_name="Student details", index=False)
+    print("Data written successfully in Excel")
+    print("Data from Excel file:")
+    print(pd.read_excel("Student.xlsx", sheet_name="Student details"))
+except Exception as error:
+    print("Excel support is unavailable in this browser runtime:", error)
+    student_data.to_csv("Student.xlsx.csv", index=False)
+    print("A CSV version was saved as Student.xlsx.csv")`,
     "6a": `# DATASET FALLBACK: upload dataset.csv or use the built-in sample data
 # Experiment 6(a): Load and inspect numeric data for clustering
 import pandas as pd
@@ -1284,7 +1288,6 @@ print(pd.Series(model.feature_importances_, index=X.columns).sort_values(ascendi
   Object.assign(partCompilerDefaults, {
     "1a": String.raw`# Notebook source: exp1.ipynb · 1A
 import pandas as pd
-import openpyxl
 
 df = pd.read_csv("car_dataset_40x20.csv")
 print("First rows:")
@@ -1315,7 +1318,6 @@ print("Data read from JSON:")
 print(json_data)`,
     "1c": String.raw`# Notebook source: exp1.ipynb · 1C — Excel
 import pandas as pd
-import openpyxl
 
 student_data = {
     "Roll_no": [10, 11, 12, 13],
@@ -1323,20 +1325,32 @@ student_data = {
     "Dept": ["CSE", "IT", "ECE", "CSE"],
 }
 df = pd.DataFrame(student_data)
-df.to_excel("Student.xlsx", sheet_name="Student details", index=False)
-print("Data written successfully to Excel")
-
-excel_data = pd.read_excel("Student.xlsx", sheet_name="Student details")
-print("\nData read from Excel:")
-print(excel_data)`,
+try:
+    df.to_excel("Student.xlsx", sheet_name="Student details", index=False)
+    print("Data written successfully to Excel")
+    excel_data = pd.read_excel("Student.xlsx", sheet_name="Student details")
+    print("\nData read from Excel:")
+    print(excel_data)
+except Exception as error:
+    print("Excel support is unavailable in this browser Python runtime:", error)
+    print("Saving the same table as CSV instead.")
+    df.to_csv("Student.xlsx.csv", index=False)
+    print(pd.read_csv("Student.xlsx.csv"))`,
     "2a": String.raw`# Notebook source: exp2.ipynb · 2A — Fetch GitHub issues
 import requests
 import pandas as pd
 
 url = "https://api.github.com/repos/pandas-dev/pandas/issues"
-response = requests.get(url)
-response.raise_for_status()
-issues = response.json()
+try:
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
+    issues = response.json()
+except Exception as error:
+    print("GitHub API unavailable; using sample issue rows:", error)
+    issues = [
+        {"id": 1, "title": "Sample: improve groupby docs", "state": "open"},
+        {"id": 2, "title": "Sample: add dataframe test", "state": "closed"},
+    ]
 df_issues = pd.DataFrame(issues)
 print(df_issues[["id", "title", "state"]].head())`,
     "2b": String.raw`# Notebook source: exp2.ipynb · 2B — SQLite and Pandas
@@ -1468,7 +1482,17 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
-df = pd.read_csv(url)
+try:
+    df = pd.read_csv(url)
+except Exception as error:
+    print("Could not download Iris CSV; using sample rows:", error)
+    df = pd.DataFrame({
+        "sepal_length": [5.1, 4.9, 7.0, 6.4, 6.3, 5.8],
+        "sepal_width": [3.5, 3.0, 3.2, 3.2, 3.3, 2.7],
+        "petal_length": [1.4, 1.4, 4.7, 4.5, 6.0, 5.1],
+        "petal_width": [0.2, 0.2, 1.4, 1.5, 2.5, 1.9],
+        "species": ["setosa", "setosa", "versicolor", "versicolor", "virginica", "virginica"],
+    })
 print("First five records:")
 print(df.head())
 print("\nDataset information:")
@@ -1729,7 +1753,17 @@ print(result)`,
 import pandas as pd
 
 url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
-df = pd.read_csv(url)
+try:
+    df = pd.read_csv(url)
+except Exception as error:
+    print("Could not download Iris CSV; using sample rows:", error)
+    df = pd.DataFrame({
+        "sepal_length": [5.1, 4.9, 7.0, 6.4, 6.3, 5.8],
+        "sepal_width": [3.5, 3.0, 3.2, 3.2, 3.3, 2.7],
+        "petal_length": [1.4, 1.4, 4.7, 4.5, 6.0, 5.1],
+        "petal_width": [0.2, 0.2, 1.4, 1.5, 2.5, 1.9],
+        "species": ["setosa", "setosa", "versicolor", "versicolor", "virginica", "virginica"],
+    })
 print("First five records:")
 print(df.head())
 print("\nDataset information:")
@@ -1766,8 +1800,16 @@ import os
 
 folder = os.getcwd()
 html_file = os.path.join(folder, "reviews.html")
-with open(html_file, "r", encoding="latin-1") as file:
-    html_content = file.read()
+if os.path.exists(html_file):
+    with open(html_file, "r", encoding="latin-1") as file:
+        html_content = file.read()
+else:
+    print("reviews.html not uploaded; analyzing sample reviews.")
+    html_content = """
+    <div class="review"><span class="review-title">Great product</span><p class="review-text">Excellent quality and fast delivery.</p><span class="rating">5</span></div>
+    <div class="review"><span class="review-title">Not satisfied</span><p class="review-text">Poor quality and very disappointing.</p><span class="rating">1</span></div>
+    <div class="review"><span class="review-title">Good value</span><p class="review-text">Works well for the price.</p><span class="rating">4</span></div>
+    """
 
 soup = BeautifulSoup(html_content, "html.parser")
 records = []
@@ -1883,7 +1925,22 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
-df = pd.read_csv("marketing_campaign.csv", sep="\t")
+try:
+    df = pd.read_csv("marketing_campaign.csv", sep="\t")
+    required_columns = {"Income", "MntWines", "MntFruits", "MntMeatProducts", "MntFishProducts", "MntSweetProducts", "MntGoldProds"}
+    if not required_columns.issubset(df.columns):
+        raise ValueError("marketing_campaign.csv is missing required spending columns")
+except Exception as error:
+    print("Marketing dataset unavailable; using sample customers:", error)
+    df = pd.DataFrame({
+        "Income": [32000, 35000, 38000, 42000, 48000, 52000, 65000, 68000, 72000, 81000, 90000, 98000],
+        "MntWines": [15, 20, 18, 30, 45, 50, 210, 230, 250, 310, 340, 360],
+        "MntFruits": [2, 3, 4, 5, 8, 10, 25, 28, 30, 40, 45, 50],
+        "MntMeatProducts": [12, 15, 18, 22, 30, 35, 120, 135, 145, 190, 210, 230],
+        "MntFishProducts": [3, 4, 4, 6, 8, 9, 28, 30, 33, 45, 50, 54],
+        "MntSweetProducts": [2, 3, 4, 5, 6, 8, 22, 25, 28, 38, 43, 47],
+        "MntGoldProds": [5, 6, 7, 8, 10, 12, 35, 38, 42, 55, 60, 65],
+    })
 features = ["Income", "MntWines", "MntFruits", "MntMeatProducts", "MntFishProducts", "MntSweetProducts", "MntGoldProds"]
 data = df[features].copy()
 data = data.fillna(data.median())
@@ -2012,7 +2069,7 @@ else:
       return [key, `${experimentId}(${letter}) · ${partDescription}`];
     });
     const firstPartSavedCode = savedCodes[definitions[0]?.[0]] || item.code || "";
-    const partCodeVersion = 6;
+    const partCodeVersion = 8;
     const migratePartCodes = item.partCodeVersion !== partCodeVersion;
     const experimentOptions = labs.map((entry) => `<option value="${Number(entry.id)}" ${Number(entry.id) === experimentId ? "selected" : ""}>Experiment ${String(entry.id).padStart(2, "0")} · ${escapeHtml(entry.title)}</option>`).join("");
     container.innerHTML = `<div class="compiler-experiment-picker"><label for="compilerExperimentSelect">CHOOSE EXPERIMENT</label><select id="compilerExperimentSelect" aria-label="Choose experiment for compiler">${experimentOptions}</select></div><div class="part-switcher" role="tablist" aria-label="Choose Experiment ${experimentId} compiler">${definitions.map(([key]) => `<button type="button" role="tab" data-select-part="${key}">${key}</button>`).join("")}</div>` + definitions.map(([key, title], index) => {
@@ -2070,11 +2127,6 @@ else:
           status.textContent = "Loading packages and datasets…";
           const importsForPyodide = key === "1c" ? editor.value.replace(/^import openpyxl\s*$/m, "") : editor.value;
           await runtime.loadPackagesFromImports(importsForPyodide);
-          if (key === "1c" && editor.value.includes("to_excel(")) {
-            status.textContent = "Loading Excel support…";
-            await runtime.loadPackage("micropip");
-            await runtime.runPythonAsync("import micropip\nawait micropip.install('openpyxl')");
-          }
           runtime.globals.set("lab_input", $("labInputData").value);
           const uploads = await readUploads(idForCompiler);
           for (const file of uploads.datasets || []) {
