@@ -133,6 +133,16 @@ else:
     ];
     persistMigration();
   }
+  if (experimentFive && experimentFive.parts.length < 5) {
+    experimentFive.parts = [
+      "5(a) Explore the Iris dataset with line, scatter, histogram, box, and pair plots.",
+      "5(b) Compare monthly sales and expenses; make grouped and stacked student-marks bar charts.",
+      "5(c) Plot marks with a histogram and density curve.",
+      "5(d) Plot study hours against marks and calculate correlation.",
+      "5(e) Compare department marks with a box plot.",
+    ];
+    persistMigration();
+  }
 
   const experimentsSevenToTen = [
     { id: 7, title: "Pandas GroupBy and Aggregation", desc: "Group student and Iris data to calculate marks, attendance, and summary statistics.", summary: "Use Pandas groupby and aggregate functions to summarize student performance across departments, years, and Iris species.", parts: ["7(a) Group departments and years; calculate average marks.", "7(b) Aggregate marks and attendance with sum, mean, and standard deviation.", "7(c) Summarize Iris measurements and counts by species."], video: "https://www.youtube.com/watch?v=M6HaL2UBmWQ", videoUrl: "https://www.youtube.com/watch?v=M6HaL2UBmWQ", architecture: ["CSV data", "Pandas DataFrame", "Group by category", "Aggregate statistics", "Interpret results"], steps: ["Load the student or Iris data with Pandas.", "Inspect category and numeric columns.", "Group by one or more categories.", "Apply aggregation functions and compare results.", "Interpret the grouped summaries."], objectives: ["Use groupby with one or multiple columns.", "Apply multiple aggregate functions.", "Interpret grouped summaries."], requirements: ["Python 3", "Jupyter Notebook", "Pandas", "Student and Iris datasets"], code: "", input: "", output: "", result: "Grouped summary tables for marks, attendance, and Iris measurements.", conclusion: "Grouping and aggregation reveal differences across categories." },
@@ -569,7 +579,7 @@ _labmanual_stdout.getvalue() + _labmanual_stderr.getvalue()
   const lines = (id) => $(id).value.split(/\r?\n/).map((x) => x.trim()).filter(Boolean);
   let activePartKey = "1a";
   let pendingPartKey = "";
-  const knownPartLetters = { 1: ["a", "b", "c"], 2: ["a", "b"], 3: ["a", "b", "c", "d"], 4: ["a", "b", "c"], 5: ["a", "b", "c", "d"], 6: ["a", "b", "c", "d", "e", "f", "g"], 7: ["a", "b", "c"], 8: ["a", "b"], 9: [], 10: [] };
+  const knownPartLetters = { 1: ["a", "b", "c"], 2: ["a", "b"], 3: ["a", "b", "c", "d"], 4: ["a", "b", "c"], 5: ["a", "b", "c", "d", "e"], 6: ["a", "b", "c", "d", "e", "f", "g"], 7: ["a", "b", "c"], 8: ["a", "b"], 9: [], 10: [] };
   function partLettersFor(item) {
     const id = Number(item.id);
     if (knownPartLetters[id]) return knownPartLetters[id];
@@ -1271,6 +1281,680 @@ print(export_text(model, feature_names=list(X.columns)))
 print("Feature importance:")
 print(pd.Series(model.feature_importances_, index=X.columns).sort_values(ascending=False))`,
   };
+  Object.assign(partCompilerDefaults, {
+    "1a": String.raw`# Notebook source: exp1.ipynb · 1A
+import pandas as pd
+import openpyxl
+
+df = pd.read_csv("car_dataset_40x20.csv")
+print("First rows:")
+print(df.head())
+print("\nShape:", df.shape)
+print("\nColumns:")
+print(df.columns)`,
+    "1b": String.raw`# Notebook source: exp1.ipynb · 1B — CSV and JSON
+import pandas as pd
+
+student_data = {
+    "Roll_no": [10, 11, 12, 13],
+    "name": ["Ganesh", "mani", "nithin", "Chandhu"],
+    "Dept": ["CSE", "IT", "ECE", "CSE"],
+}
+df = pd.DataFrame(student_data)
+
+df.to_csv("Student_output.txt", index=False)
+print("CSV file written successfully")
+csv_data = pd.read_csv("Student_output.txt")
+print("\nData read from CSV:")
+print(csv_data)
+
+df.to_json("Students.json", orient="records", indent=4)
+print("\nJSON file written successfully")
+json_data = pd.read_json("Students.json")
+print("Data read from JSON:")
+print(json_data)`,
+    "1c": String.raw`# Notebook source: exp1.ipynb · 1C — Excel
+import pandas as pd
+import openpyxl
+
+student_data = {
+    "Roll_no": [10, 11, 12, 13],
+    "name": ["Ganesh", "mani", "nithin", "Chandhu"],
+    "Dept": ["CSE", "IT", "ECE", "CSE"],
+}
+df = pd.DataFrame(student_data)
+df.to_excel("Student.xlsx", sheet_name="Student details", index=False)
+print("Data written successfully to Excel")
+
+excel_data = pd.read_excel("Student.xlsx", sheet_name="Student details")
+print("\nData read from Excel:")
+print(excel_data)`,
+    "2a": String.raw`# Notebook source: exp2.ipynb · 2A — Fetch GitHub issues
+import requests
+import pandas as pd
+
+url = "https://api.github.com/repos/pandas-dev/pandas/issues"
+response = requests.get(url)
+response.raise_for_status()
+issues = response.json()
+df_issues = pd.DataFrame(issues)
+print(df_issues[["id", "title", "state"]].head())`,
+    "2b": String.raw`# Notebook source: exp2.ipynb · 2B — SQLite and Pandas
+import sqlite3
+import pandas as pd
+
+conn = sqlite3.connect("Students.db")
+cursor = conn.cursor()
+cursor.execute("CREATE TABLE IF NOT EXISTS Students (id INTEGER, name TEXT)")
+cursor.execute("INSERT INTO Students VALUES(1, 'ganesh')")
+conn.commit()
+cursor.execute("INSERT INTO Students VALUES(2, 'mani')")
+conn.commit()
+
+df = pd.read_sql_query("SELECT * FROM Students", conn)
+print("Student records:")
+print(df)
+
+cursor.execute("DELETE FROM Students WHERE id=1")
+cursor.execute("UPDATE Students SET name ='Alice' where id=1")
+conn.commit()
+conn.commit()
+conn.close()`,
+    "3a": String.raw`# Notebook source: exp3.ipynb · 3A — Missing values
+import numpy as np
+import pandas as pd
+
+data = {"A": [1, 2, np.nan], "B": [4, np.nan, np.nan]}
+df = pd.DataFrame(data)
+print("Missing-value mask:")
+print(df.isna())
+
+df_clean = df.dropna()
+df_filled = df.fillna(0)
+print("\nRows after dropping missing values:")
+print(df_clean)
+print("\nValues after filling missing data with zero:")
+print(df_filled)`,
+    "3b": String.raw`# Notebook source: exp3.ipynb · 3B — Map values and rename columns
+import pandas as pd
+
+df = pd.DataFrame({"gender": ["male", "female"]})
+df["gender_num"] = df["gender"].map({"male": 1, "female": 0})
+df_renamed = df.rename(columns={"gender": "Gender"})
+print(df_renamed)`,
+    "3c": String.raw`# Notebook source: exp3.ipynb · 3C — Detect outliers
+import numpy as np
+import pandas as pd
+
+data = pd.DataFrame(np.random.randn(100, 3), columns=["A", "B", "C"])
+outliers = (data > 3) | (data < -3)
+print("Outlier counts by column:")
+print(outliers.sum())
+print("\nData:")
+print(data)`,
+    "3d": String.raw`# Notebook source: exp3.ipynb · 3D — Split text with regular expressions
+import re
+
+text = "this is \t a \n test"
+split_text = re.split(r"\st", text)
+print(split_text)`,
+    "4a": String.raw`# Notebook source: exp4.ipynb · 4A — MultiIndex selection
+import pandas as pd
+
+index = [
+    ["Engineering", "Engineering", "Science", "Science"],
+    ["CSE", "ECE", "Physics", "Chemistry"],
+]
+multi_index = pd.MultiIndex.from_arrays(index, names=["Department", "Branch"])
+marks = pd.Series([85, 78, 92, 88], index=multi_index)
+
+print("Original Series:")
+print(marks)
+print("\nEngineering data:")
+print(marks.loc["Engineering"])
+print("\nCSE data:")
+print(marks.loc[("Engineering", "CSE")])
+print("\nScience data:")
+print(marks.loc["Science"])`,
+    "4b": String.raw`# Notebook source: exp4.ipynb · 4B — Stack and unstack
+import pandas as pd
+
+index = pd.MultiIndex.from_tuples(
+    [("Engineering", "CSE"), ("Engineering", "ECE"),
+     ("Science", "Physics"), ("Science", "Chemistry")],
+    names=["Department", "Branch"],
+)
+data = pd.DataFrame(
+    {"2025": [85, 78, 92, 88], "2026": [90, 82, 95, 91]},
+    index=index,
+)
+print("Original table:")
+print(data)
+unstacked_data = data.unstack()
+print("\nAfter unstack:")
+print(unstacked_data)
+stacked_data = unstacked_data.stack()
+print("\nAfter stack:")
+print(stacked_data)`,
+    "4c": String.raw`# Notebook source: exp4.ipynb · 4C — Merge and combine DataFrames
+import pandas as pd
+
+df1 = pd.DataFrame(
+    {"Name": ["Ravi", "Sita", "Arun"], "Marks": [85, None, 78], "Grade": ["A", "B", None]},
+    index=[101, 102, 103],
+)
+df2 = pd.DataFrame(
+    {"Name": ["Ravi", "Sita", "Kiran"], "Marks": [90, 88, 82], "Grade": [None, "A", "B"]},
+    index=[101, 102, 104],
+)
+print("First DataFrame:")
+print(df1)
+print("\nSecond DataFrame:")
+print(df2)
+merged = pd.merge(
+    df1, df2, left_index=True, right_index=True, how="outer",
+    suffixes=("_DF1", "_DF2"),
+)
+print("\nMerged DataFrame:")
+print(merged)
+combined = df1.combine_first(df2)
+print("\nAfter combine_first:")
+print(combined)`,
+  });
+  Object.assign(partCompilerDefaults, {
+    "5a": String.raw`# Notebook source: exp5.ipynb · 5A — Iris plots
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
+df = pd.read_csv(url)
+print("First five records:")
+print(df.head())
+print("\nDataset information:")
+print(df.info())
+print("\nStatistical summary:")
+print(df.describe())
+
+plt.figure(figsize=(8, 5))
+plt.plot(df.index, df["sepal_length"], label="Sepal Length")
+plt.plot(df.index, df["petal_length"], label="Petal Length")
+plt.xlabel("Sample Index")
+plt.ylabel("Length")
+plt.title("Sepal Length and Petal Length")
+plt.legend(); plt.grid(); plt.show()
+
+plt.figure(figsize=(8, 5))
+sns.scatterplot(data=df, x="sepal_length", y="petal_length", hue="species")
+plt.title("Sepal Length vs Petal Length")
+plt.show()
+
+plt.figure(figsize=(8, 5))
+sns.histplot(data=df, x="sepal_length", hue="species", kde=True)
+plt.title("Distribution of Sepal Length")
+plt.show()
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(data=df, x="species", y="petal_length")
+plt.title("Petal Length by Species")
+plt.show()
+
+sns.pairplot(df, hue="species")
+plt.show()`,
+    "5b": String.raw`# Notebook source: exp5.ipynb · 5B — Line and bar charts
+import pandas as pd
+import matplotlib.pyplot as plt
+
+months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+sales = [120, 150, 180, 160, 220, 250]
+expenses = [80, 100, 120, 110, 140, 160]
+fig, axes = plt.subplots(2, 1, figsize=(10, 8))
+axes[0].plot(months, sales, marker="o", linewidth=2, label="Sales")
+axes[0].set(title="Monthly Sales", xlabel="Month", ylabel="Sales")
+axes[0].annotate("Highest Sales", xy=(5, 250), xytext=(3.5, 270), arrowprops=dict(arrowstyle="->"))
+axes[0].legend(); axes[0].grid(True)
+axes[1].plot(months, expenses, marker="s", linewidth=2, label="Expenses")
+axes[1].set(title="Monthly Expenses", xlabel="Month", ylabel="Expenses")
+axes[1].annotate("Highest Expense", xy=(5, 160), xytext=(3.5, 180), arrowprops=dict(arrowstyle="->"))
+axes[1].legend(); axes[1].grid(True)
+fig.suptitle("Monthly Sales and Expenses Analysis", fontsize=16)
+plt.tight_layout(); plt.show()
+
+marks = pd.DataFrame(
+    {"Python": [85, 90, 78, 88], "Java": [75, 82, 80, 85], "C++": [80, 76, 85, 90]},
+    index=["Student1", "Student2", "Student3", "Student4"],
+)
+print("Student marks:")
+print(marks)
+marks.plot(kind="bar", figsize=(8, 5), title="Student Marks by Language")
+plt.xlabel("Students"); plt.ylabel("Marks"); plt.xticks(rotation=0)
+plt.legend(title="Subjects"); plt.tight_layout(); plt.show()
+marks.plot(kind="bar", stacked=True, figsize=(8, 5), title="Stacked Student Marks")
+plt.xlabel("Students"); plt.ylabel("Total Marks"); plt.xticks(rotation=0)
+plt.legend(title="Subjects"); plt.tight_layout(); plt.show()`,
+    "5c": String.raw`# Notebook source: exp5.ipynb · 5C — Histogram and density plot
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+values = [45, 50, 52, 55, 58, 60, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85, 88, 90, 92, 95]
+df = pd.DataFrame({"Marks": values})
+print("Observed data:")
+print(df)
+
+plt.figure(figsize=(8, 5))
+sns.histplot(df["Marks"], bins=6, kde=False)
+plt.title("Histogram of Marks"); plt.xlabel("Marks"); plt.ylabel("Frequency")
+plt.tight_layout(); plt.show()
+
+plt.figure(figsize=(8, 5))
+sns.kdeplot(df["Marks"], fill=True)
+plt.title("Density Plot of Marks"); plt.xlabel("Marks"); plt.ylabel("Density")
+plt.tight_layout(); plt.show()`,
+    "5d": String.raw`# Notebook source: exp5.ipynb · 5D — Scatter plot and correlation
+import pandas as pd
+import matplotlib.pyplot as plt
+
+study_hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+marks = [45, 50, 55, 60, 65, 70, 72, 80, 85, 90]
+df = pd.DataFrame({"Study_Hours": study_hours, "Marks": marks})
+print("Data:")
+print(df)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(df["Study_Hours"], df["Marks"])
+plt.title("Relationship Between Study Hours and Marks")
+plt.xlabel("Study Hours"); plt.ylabel("Marks"); plt.grid(True)
+plt.tight_layout(); plt.show()
+correlation = df["Study_Hours"].corr(df["Marks"])
+print("\nCorrelation Coefficient:", round(correlation, 2))`,
+    "5e": String.raw`# Notebook source: exp5.ipynb · 5E — Box plot by department
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data = {
+    "Department": ["CSE"] * 5 + ["ECE"] * 5 + ["EEE"] * 5,
+    "Marks": [78, 85, 90, 72, 88, 65, 70, 82, 75, 80, 60, 68, 72, 76, 85],
+}
+df = pd.DataFrame(data)
+print("Data:")
+print(df)
+plt.figure(figsize=(8, 5))
+sns.boxplot(x="Department", y="Marks", data=df)
+plt.title("Marks Distribution by Department")
+plt.xlabel("Department"); plt.ylabel("Marks")
+plt.grid(axis="y", linestyle="--", alpha=0.5)
+plt.tight_layout(); plt.show()`,
+    "6a": String.raw`# Notebook source: exp6.ipynb · 6A — Time-indexed temperature series
+import pandas as pd
+
+dates = pd.to_datetime(["2026-01-01", "2026-01-02", "2026-01-03", "2026-01-04", "2026-01-05"])
+temperature = [28, 30, 29, 31, 32]
+time_series = pd.Series(temperature, index=dates)
+print(time_series)`,
+    "6b": String.raw`# Notebook source: exp6.ipynb · 6B — Create a date range
+import pandas as pd
+
+date_index = pd.date_range(start="2026-01-01", periods=7, freq="D")
+print(date_index)`,
+    "6c": String.raw`# Notebook source: exp6.ipynb · 6C — Time zones
+import pandas as pd
+
+india_dates = pd.date_range(start="2026-01-01 09:00", periods=3, freq="h", tz="Asia/Kolkata")
+print("1. Asia/Kolkata date range:")
+print(india_dates)
+
+dates = pd.date_range(start="2026-01-01 09:00", periods=3, freq="h")
+print("\n2. Timezone-naive date range:")
+print(dates)
+localized_dates = dates.tz_localize("Asia/Kolkata")
+print("\n3. Localized to Asia/Kolkata:")
+print(localized_dates)
+new_york_dates = localized_dates.tz_convert("America/New_York")
+print("\n4. Converted to America/New_York:")
+print(new_york_dates)
+
+india_series = pd.Series([100, 200, 300], index=localized_dates)
+new_york_series = pd.Series([400, 500, 600], index=new_york_dates)
+print("\n5. India series:")
+print(india_series)
+print("\nNew York series:")
+print(new_york_series)
+print("\n6. Combined time series:")
+print(pd.concat([india_series, new_york_series]))`,
+    "6d": String.raw`# Notebook source: exp6.ipynb · 6D — Period arithmetic and ranges
+import pandas as pd
+
+period = pd.Period("2026-01", freq="M")
+print("Original period:", period)
+print("After adding 2:", period + 2)
+print("After adding 5:", period + 5)
+print("After subtracting 1:", period - 1)
+print("After subtracting 3:", period - 3)
+print("\nMonthly period range:")
+print(pd.period_range(start="2026-01", periods=6, freq="M"))`,
+    "6e": String.raw`# Notebook source: exp6.ipynb · 6E — Convert monthly periods to days
+import pandas as pd
+
+period = pd.Period("2026-01", freq="M")
+print("Original period:", period)
+print("\nMonthly period at daily start:")
+print(period.asfreq("D", how="start"))
+print("\nMonthly period at daily end:")
+print(period.asfreq("D", how="end"))
+
+period_index = pd.period_range(start="2026-01", periods=3, freq="M")
+print("\nOriginal PeriodIndex:")
+print(period_index)
+print("\nPeriodIndex converted to daily start:")
+print(period_index.asfreq("D", how="start"))
+print("\nPeriodIndex converted to daily end:")
+print(period_index.asfreq("D", how="end"))`,
+    "6f": String.raw`# Notebook source: exp6.ipynb · 6F — Convert timestamps to monthly periods
+import pandas as pd
+
+dates = pd.to_datetime(["2026-01-10", "2026-02-15", "2026-03-20", "2026-04-25"])
+sales = pd.Series([1000, 1500, 1800, 2200], index=dates)
+print("Original sales series:")
+print(sales)
+print("\nConverted to monthly periods:")
+print(sales.to_period("M"))
+
+df = pd.DataFrame({"Sales": [1000, 1500, 1800, 2200], "Profit": [200, 300, 400, 500]}, index=dates)
+print("\nOriginal DataFrame:")
+print(df)
+print("\nDataFrame converted to monthly periods:")
+print(df.to_period("M"))`,
+    "6g": String.raw`# Notebook source: exp6.ipynb · 6G — Resample time series
+import pandas as pd
+
+dates = pd.date_range(start="2026-01-01 00:00", periods=12, freq="h")
+values = [10, 12, 15, 14, 18, 20, 22, 21, 25, 28, 30, 32]
+time_series = pd.Series(values, index=dates)
+print("Original hourly series:")
+print(time_series)
+print("\nThree-hour mean:")
+print(time_series.resample("3h").mean())
+print("\nFour-hour sum:")
+print(time_series.resample("4h").sum())
+print("\nThirty-minute upsampling:")
+print(time_series.resample("30min").asfreq())
+print("\nThirty-minute upsampling with forward fill:")
+print(time_series.resample("30min").ffill())`,
+  });
+  Object.assign(partCompilerDefaults, {
+    "7a": String.raw`# Notebook source: exp7.ipynb · 7A — Group students by department/year
+import pandas as pd
+
+data = {
+    "Name": ["Ravi", "Sita", "Arun", "Priya", "Kiran", "Anil", "Lakshmi", "Rahul"],
+    "Department": ["CSE", "CSE", "ECE", "ECE", "CSE", "ECE", "CSE", "ECE"],
+    "Year": [2, 2, 3, 3, 2, 3, 3, 2],
+    "Marks": [85, 90, 78, 88, 75, 82, 95, 70],
+}
+df = pd.DataFrame(data)
+print("Original DataFrame:")
+print(df)
+
+for department, group in df.groupby("Department"):
+    print("\nDepartment:", department)
+    print(group)
+print("\nAverage marks by department:")
+print(df.groupby("Department")["Marks"].mean())
+
+for key, group in df.groupby(["Department", "Year"]):
+    print("\nGroup:", key)
+    print(group)
+print("\nAverage marks by department and year:")
+print(df.groupby(["Department", "Year"])["Marks"].mean())`,
+    "7b": String.raw`# Notebook source: exp7.ipynb · 7B — Aggregate marks and attendance
+import pandas as pd
+
+data = {
+    "Department": ["CSE", "CSE", "CSE", "ECE", "ECE", "ECE", "EEE", "EEE", "EEE"],
+    "Marks": [80, 75, 85, 70, 65, 75, 90, 85, 95],
+    "Attendance": [90, 85, 95, 80, 75, 85, 95, 90, 100],
+}
+df = pd.DataFrame(data)
+print("Original DataFrame:")
+print(df)
+result = df.groupby("Department").aggregate({
+    "Marks": ["sum", "mean", "std"],
+    "Attendance": ["sum", "mean", "std"],
+})
+print("\nSummary statistics:")
+print(result)`,
+    "7c": String.raw`# Notebook source: exp7.ipynb · 7C — Group Iris data by species
+import pandas as pd
+
+url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
+df = pd.read_csv(url)
+print("First five records:")
+print(df.head())
+print("\nDataset information:")
+df.info()
+print("\nStatistical summary:")
+print(df.describe())
+
+single = df.groupby("species")["sepal_length"].agg(["count", "sum", "mean", "std", "min", "max"])
+print("\nSingle-column group summary:")
+print(single)
+multiple = df.groupby(["species", "sepal_width"])["sepal_length"].mean()
+print("\nGrouped by species and sepal width:")
+print(multiple.head(15))
+summary = df.groupby("species").agg({
+    "sepal_length": ["mean", "std", "min", "max"],
+    "sepal_width": ["mean", "std", "min", "max"],
+    "petal_length": ["mean", "std", "min", "max"],
+    "petal_width": ["mean", "std", "min", "max"],
+})
+print("\nSummary by species:")
+print(summary)
+print("\nRecords per species:")
+print(df["species"].value_counts())
+print("\nAverage petal length:")
+print(df.groupby("species")["petal_length"].mean())
+print("\nAverage petal width:")
+print(df.groupby("species")["petal_width"].mean())
+print("\nMaximum sepal length:")
+print(df.groupby("species")["sepal_length"].max())`,
+    "8a": String.raw`# Notebook source: exp8.ipynb · 8A — Scrape local review HTML
+from bs4 import BeautifulSoup
+import pandas as pd
+import os
+
+folder = os.getcwd()
+html_file = os.path.join(folder, "reviews.html")
+with open(html_file, "r", encoding="latin-1") as file:
+    html_content = file.read()
+
+soup = BeautifulSoup(html_content, "html.parser")
+records = []
+for block in soup.select(".review"):
+    review_element = block.select_one(".review-text")
+    rating_element = block.select_one(".rating")
+    title_element = block.select_one(".review-title")
+    review_text = review_element.get_text(" ", strip=True) if review_element else ""
+    rating_text = rating_element.get_text(" ", strip=True) if rating_element else ""
+    title = title_element.get_text(" ", strip=True) if title_element else ""
+    if review_text:
+        records.append({"title": title, "review": review_text, "rating": rating_text})
+
+df = pd.DataFrame(records)
+csv_file = os.path.join(folder, "product_reviews.csv")
+df.to_csv(csv_file, index=False, encoding="utf-8-sig")
+print(df.head())
+print("Total reviews extracted:", len(df))
+print("Saved to product_reviews.csv")`,
+    "8b": String.raw`# Notebook source: exp8.ipynb · 8B — Sentiment, word clouds, review stats (8B includes notebook C/D)
+import re
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import nltk
+from collections import Counter
+from wordcloud import WordCloud
+from nltk.corpus import stopwords
+from nltk.sentiment.vader import SentimentIntensityAnalyzer as NLTKVADER
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer as StandaloneVADER
+
+nltk.download("stopwords", quiet=True)
+nltk.download("vader_lexicon", quiet=True)
+df = pd.read_csv("product_reviews.csv")
+df["review"] = df["review"].fillna("").astype(str)
+
+analyzer = StandaloneVADER()
+df["sentiment"] = df["review"].apply(
+    lambda text: "Positive" if analyzer.polarity_scores(text)["compound"] >= 0.05
+    else "Negative" if analyzer.polarity_scores(text)["compound"] <= -0.05
+    else "Neutral"
+)
+
+def generate_wordcloud(text, title, filename):
+    if not text.strip():
+        print("No text available for:", title)
+        return
+    cloud = WordCloud(width=1200, height=600, background_color="white", max_words=150, collocations=False).generate(text)
+    plt.figure(figsize=(12, 6)); plt.imshow(cloud, interpolation="bilinear")
+    plt.axis("off"); plt.title(title); plt.tight_layout(); plt.savefig(filename, dpi=300, bbox_inches="tight"); plt.show()
+
+all_text = " ".join(df["review"])
+generate_wordcloud(all_text, "WordCloud - All Reviews", "wordcloud_all.png")
+for label in ["Positive", "Negative"]:
+    text = " ".join(df.loc[df["sentiment"] == label, "review"])
+    generate_wordcloud(text, "WordCloud - " + label + " Reviews", "wordcloud_" + label.lower() + ".png")
+df.to_csv("product_reviews_analyzed.csv", index=False)
+print("\nSentiment counts:")
+print(df["sentiment"].value_counts())
+
+stop_words = set(stopwords.words("english"))
+def review_statistics(text):
+    tokens = re.findall(r"\b[\w']+\b", text.lower())
+    words = re.findall(r"\b[A-Za-z]+\b", text)
+    numbers = re.findall(r"\b\d+(?:\.\d+)?\b", text)
+    stops = [token for token in tokens if token in stop_words]
+    return pd.Series({
+        "word_count": len(tokens), "character_count": len(text),
+        "numeric_count": len(numbers), "stopword_count": len(stops),
+        "average_word_length": sum(map(len, words)) / len(words) if words else 0,
+    })
+
+stats = df["review"].apply(review_statistics)
+df = pd.concat([df, stats], axis=1)
+df.to_csv("review_statistics.csv", index=False)
+plot_columns = [("stopword_count", "Stopword Count"), ("numeric_count", "Numeric Token Count"), ("word_count", "Word Count"), ("character_count", "Character Count"), ("average_word_length", "Average Word Length")]
+fig, axes = plt.subplots(3, 2, figsize=(14, 15)); axes = axes.flatten()
+for index, (column, title) in enumerate(plot_columns):
+    sns.histplot(data=df, x=column, kde=True, ax=axes[index], bins=20)
+    axes[index].set_title(title); axes[index].set_xlabel(title); axes[index].set_ylabel("Number of Reviews")
+axes[-1].axis("off"); plt.tight_layout(); plt.savefig("review_statistics_distributions.png", dpi=300); plt.show()
+tokens = re.findall(r"\b[\w']+\b", " ".join(df["review"]).lower())
+print("Top 10 stopwords:")
+print(Counter(token for token in tokens if token in stop_words).most_common(10))
+print("\nDescriptive statistics:")
+print(df[["stopword_count", "numeric_count", "word_count", "character_count", "average_word_length"]].describe())
+
+nltk_analyzer = NLTKVADER()
+vader_analyzer = StandaloneVADER()
+nltk_scores = df["review"].apply(nltk_analyzer.polarity_scores)
+vader_scores = df["review"].apply(vader_analyzer.polarity_scores)
+for prefix, scores in [("nltk", nltk_scores), ("vader", vader_scores)]:
+    df[prefix + "_positive"] = scores.apply(lambda score: score["pos"])
+    df[prefix + "_negative"] = scores.apply(lambda score: score["neg"])
+    df[prefix + "_neutral"] = scores.apply(lambda score: score["neu"])
+    df[prefix + "_compound"] = scores.apply(lambda score: score["compound"])
+    df[prefix + "_sentiment"] = df[prefix + "_compound"].apply(
+        lambda score: "Positive" if score >= 0.05 else "Negative" if score <= -0.05 else "Neutral"
+    )
+print("\nVADER comparison:")
+print(df[["review", "nltk_compound", "nltk_sentiment", "vader_compound", "vader_sentiment"]].head(10).to_string(index=False))
+print("\nNLTK sentiment counts:")
+print(df["nltk_sentiment"].value_counts())
+print("\nStandalone VADER sentiment counts:")
+print(df["vader_sentiment"].value_counts())
+df.to_csv("sentiment_analysis_results.csv", index=False)
+print("Results saved to sentiment_analysis_results.csv")`,
+    "9": String.raw`# Notebook source: exp9.ipynb — K-Means customer segmentation
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+df = pd.read_csv("marketing_campaign.csv", sep="\t")
+features = ["Income", "MntWines", "MntFruits", "MntMeatProducts", "MntFishProducts", "MntSweetProducts", "MntGoldProds"]
+data = df[features].copy()
+data = data.fillna(data.median())
+data = data.clip(lower=data.quantile(0.01), upper=data.quantile(0.99), axis=1)
+X = StandardScaler().fit_transform(data)
+
+inertias = []
+scores = []
+for k in range(2, 8):
+    model = KMeans(n_clusters=k, random_state=42, n_init=10)
+    labels = model.fit_predict(X)
+    inertias.append(model.inertia_)
+    scores.append(silhouette_score(X, labels))
+plt.plot(range(2, 8), inertias, marker="o")
+plt.xlabel("Number of Clusters (K)"); plt.ylabel("Inertia"); plt.title("Elbow Method"); plt.show()
+print("Silhouette scores:", dict(zip(range(2, 8), scores)))
+
+best_k = list(range(2, 8))[scores.index(max(scores))]
+kmeans = KMeans(n_clusters=best_k, random_state=42, n_init=10)
+df["Customer_Segment"] = kmeans.fit_predict(X)
+summary = df.groupby("Customer_Segment")[features].mean().round(2)
+print("\nCustomer segment summary:")
+print(summary)
+sns.scatterplot(data=df, x="Income", y="MntWines", hue="Customer_Segment", palette="Set2")
+plt.title("Customer Segments by Income and Wine Spending"); plt.show()
+df.to_csv("customer_segments.csv", index=False)
+summary.to_csv("segment_summary.csv")`,
+    "10": String.raw`# Notebook source: exp10.ipynb — Emotion classification
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
+
+data = {
+    "text": [
+        "I am very happy today", "This is a wonderful day", "I feel cheerful and excited",
+        "I am sad and lonely", "I feel very disappointed", "I miss my family so much",
+        "I am angry with you", "This makes me furious", "I hate this situation",
+        "I am scared of the dark", "I am afraid of losing", "I feel nervous and frightened",
+        "I love you so much", "You mean everything to me", "I adore spending time with you",
+        "Wow this is unbelievable", "I did not expect this surprise", "What an amazing unexpected gift",
+    ],
+    "emotion": ["happy"] * 3 + ["sadness"] * 3 + ["anger"] * 3 + ["fear"] * 3 + ["love"] * 3 + ["surprise"] * 3,
+}
+df = pd.DataFrame(data)
+X_train, X_test, y_train, y_test = train_test_split(
+    df["text"], df["emotion"], test_size=0.33, random_state=42, stratify=df["emotion"]
+)
+model = Pipeline([
+    ("tfidf", TfidfVectorizer(ngram_range=(1, 2))),
+    ("classifier", LogisticRegression(max_iter=1000)),
+])
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+print("Test Accuracy:", round(accuracy_score(y_test, predictions) * 100, 2), "%")
+print("\nClassification Report:")
+print(classification_report(y_test, predictions, zero_division=0))
+
+emoji_map = {"happy": ":)", "sadness": ":(", "anger": ">:(", "fear": ":o", "love": "<3", "surprise": ":O"}
+def detect_emotion(text):
+    emotion = model.predict([text])[0]
+    print("Input Text:", text)
+    print("Detected Emotion:", emotion)
+    print("Relevant Emoji:", emoji_map[emotion])
+
+detect_emotion("I am happy to see you")
+detect_emotion("I feel lonely today")
+detect_emotion("I love my family")`,
+  });
   window.partCompilerDefaults = partCompilerDefaults;
   const csvFallbackLoader = `# DATASET FALLBACK: use dataset.csv, another uploaded CSV, or sample data
 from pathlib import Path
@@ -1296,41 +1980,45 @@ else:
   function renderPartCompilers(item) {
     const container = $("partCompilers");
     const experimentId = Number(item.id);
-    if (!activePartKey.startsWith(String(experimentId))) activePartKey = `${experimentId}a`;
+    if (Number.parseInt(activePartKey, 10) !== experimentId) activePartKey = experimentId === 9 || experimentId === 10 ? String(experimentId) : `${experimentId}a`;
     const savedCodes = item.partCodes || {};
     const definitions = experimentId === 1 ? [
-      ["1a", "1(a) · Load and inspect the dataset"],
-      ["1b", "1(b) · Check and clean the dataset"],
-      ["1c", "1(c) · Summary statistics and histograms"],
+      ["1a", "1(a) · Read and inspect the car dataset"],
+      ["1b", "1(b) · Write and read CSV and JSON files"],
+      ["1c", "1(c) · Write and read an Excel file"],
     ] : experimentId === 2 ? [
-      ["2a", "2(a) · Prepare features and split the data"],
-      ["2b", "2(b) · Train, predict, and evaluate the model"],
+      ["2a", "2(a) · Fetch GitHub issues with Requests"],
+      ["2b", "2(b) · Store and query records with SQLite"],
     ] : experimentId === 3 ? [
-      ["3a", "3(a) · Load data and inspect plotting columns"],
-      ["3b", "3(b) · Line chart"],
-      ["3c", "3(c) · Bar chart"],
-      ["3d", "3(d) · Scatter plot"],
+      ["3a", "3(a) · Find and handle missing values"],
+      ["3b", "3(b) · Map values and rename columns"],
+      ["3c", "3(c) · Detect outliers"],
+      ["3d", "3(d) · Split text with regular expressions"],
     ] : experimentId === 4 ? [
-      ["4a", "4(a) · Profile data quality"],
-      ["4b", "4(b) · Clean duplicates, missing values, and text"],
-      ["4c", "4(c) · Validate and export cleaned data"],
+      ["4a", "4(a) · Select values from a MultiIndex"],
+      ["4b", "4(b) · Stack and unstack a DataFrame"],
+      ["4c", "4(c) · Merge and combine DataFrames"],
     ] : experimentId === 5 ? [
-      ["5a", "5(a) · Inspect labelled data and classes"],
-      ["5b", "5(b) · Prepare data and train the classifier"],
-      ["5c", "5(c) · Predict and evaluate classification"],
-      ["5d", "5(d) · Read tree rules and feature importance"],
-    ] : partLettersFor(item).map((letter, index) => {
+      ["5a", "5(a) · Explore Iris charts"],
+      ["5b", "5(b) · Compare sales and student marks"],
+      ["5c", "5(c) · Histogram and density plot"],
+      ["5d", "5(d) · Study-hours scatter plot and correlation"],
+      ["5e", "5(e) · Marks box plot by department"],
+    ] : experimentId === 9 ? [["9", "9 · K-Means customer segmentation"]]
+      : experimentId === 10 ? [["10", "10 · Emotion classification"]]
+      : partLettersFor(item).map((letter, index) => {
       const key = `${experimentId}${letter}`;
       const partDescription = item.parts?.[index] || `Experiment ${experimentId} part ${letter.toUpperCase()}`;
       return [key, `${experimentId}(${letter}) · ${partDescription}`];
     });
     const firstPartSavedCode = savedCodes[definitions[0]?.[0]] || item.code || "";
-    const partCodeVersion = experimentId === 1 ? 4 : 2;
+    const partCodeVersion = 6;
     const migratePartCodes = item.partCodeVersion !== partCodeVersion;
     const experimentOptions = labs.map((entry) => `<option value="${Number(entry.id)}" ${Number(entry.id) === experimentId ? "selected" : ""}>Experiment ${String(entry.id).padStart(2, "0")} · ${escapeHtml(entry.title)}</option>`).join("");
     container.innerHTML = `<div class="compiler-experiment-picker"><label for="compilerExperimentSelect">CHOOSE EXPERIMENT</label><select id="compilerExperimentSelect" aria-label="Choose experiment for compiler">${experimentOptions}</select></div><div class="part-switcher" role="tablist" aria-label="Choose Experiment ${experimentId} compiler">${definitions.map(([key]) => `<button type="button" role="tab" data-select-part="${key}">${key}</button>`).join("")}</div>` + definitions.map(([key, title], index) => {
       const customDefault = index === 0 && item.code ? item.code : `# ${title}\n# Write or paste the Python code for this part here.`;
       let savedCode = savedCodes[key];
+      if (migratePartCodes && partCompilerDefaults[key]) savedCode = partCompilerDefaults[key];
       if (experimentId === 1 && !savedCode?.includes("# Notebook source: exp1.ipynb")) savedCode = partCompilerDefaults[key] || customDefault;
       const hasBrokenPythonString = savedCode && /print\("\s*(?:Shape:|Numeric columns:|Missing values:|Scaled sample:|Cluster counts:|Centres \(scaled features\):)/.test(savedCode);
       const hasNestedDatasetFallback = savedCode && /if Path\("dataset\.csv"\)\.exists\(\):\s+# DATASET FALLBACK/.test(savedCode);
@@ -1353,7 +2041,7 @@ else:
       const nextId = Number(event.currentTarget.value);
       const nextItem = labs.find((entry) => Number(entry.id) === nextId);
       if (!nextItem) return;
-      activePartKey = `${nextId}${partLettersFor(nextItem)[0] || "a"}`;
+      activePartKey = nextId === 9 || nextId === 10 ? String(nextId) : `${nextId}${partLettersFor(nextItem)[0] || "a"}`;
       pendingPartKey = activePartKey;
       window.openLab(nextId);
       requestAnimationFrame(() => $("partsPanel")?.scrollIntoView({ behavior: "smooth", block: "start" }));

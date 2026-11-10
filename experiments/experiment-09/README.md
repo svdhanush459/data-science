@@ -2,6 +2,6 @@
 
 Prepare and standardize marketing customer features, fit K-Means clusters, and evaluate the segments with a silhouette score.
 
-This experiment has no lettered parts. Python code will be added when provided.
+This experiment has one Python compiler and no lettered parts.
 
 The video overview URL is recorded in `videos/experiment-09.json`.

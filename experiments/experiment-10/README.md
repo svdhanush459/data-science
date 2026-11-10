@@ -2,6 +2,6 @@
 
 Train a text classifier on emotion-labelled messages using TF-IDF features and Logistic Regression, then review classification metrics.
 
-This experiment has no lettered parts. Python code will be added when provided.
+This experiment has one Python compiler and no lettered parts.
 
 The video overview URL is recorded in `videos/experiment-10.json`.
